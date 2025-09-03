@@ -1,52 +1,84 @@
-import React, { useState, useEffect } from "react";
-import SimulationCanvas from "./Canvas";
+import React, { useState, useEffect, useRef } from "react";
+import SimulationCanvas from "../../utils/Canvas";
 
 type Point = { x: number; y: number };
 type Line = { start: Point; end: Point };
 
-const initialLines: Line[] = [
-  { start: { x: 300, y: 300 }, end: { x: 300, y: 280 } },
-];
-
-function iterateLines(lines: Line[], randomness: number, rotation: number): Line[] {
-  const newLines: Line[] = [];
-  lines.forEach(line => {
-    const dx = line.end.x - line.start.x;
-    const dy = line.end.y - line.start.y;
-    const length = Math.sqrt(dx*dx + dy*dy) * 0.9;
-
-    const angle = Math.atan2(dy, dx) + rotation * (Math.PI / 180) + (Math.random() - 0.5) * randomness * (Math.PI / 180);
-    const newEnd = { x: line.end.x + Math.cos(angle) * length, y: line.end.y + Math.sin(angle) * length };
-    newLines.push({ start: line.end, end: newEnd });
-  });
-  return newLines;
-}
-
 export default function SpiralGrowth() {
-  const [lines, setLines] = useState<Line[]>(initialLines);
+  const canvasWidth = 600;
+  const canvasHeight = 600;
+  const center = { x: canvasWidth / 2, y: canvasHeight / 2 };
+
+  const [lines, setLines] = useState<Line[]>([]);
+  const [step, setStep] = useState(0);
   const [running, setRunning] = useState(false);
-  const [speed, setSpeed] = useState(500);
-  const [randomness, setRandomness] = useState(5);
-  const [rotation, setRotation] = useState(20);
+  const [angleIncrement, setAngleIncrement] = useState(20); // degrees per step
+  const [growthFactor, setGrowthFactor] = useState(5); // radius increase per step
+  const [branchFactor, setBranchFactor] = useState(0); // optional branching
+  const rafRef = useRef<number>();
+
+  const iterate = () => {
+    setLines(prev => {
+      const newLines: Line[] = [...prev];
+      const radius = step * growthFactor;
+      const angleRad = (step * angleIncrement * Math.PI) / 180;
+      const startPoint = prev.length === 0 ? center : prev[prev.length - 1].end;
+
+      const endPoint: Point = {
+        x: center.x + radius * Math.cos(angleRad),
+        y: center.y + radius * Math.sin(angleRad),
+      };
+
+      newLines.push({ start: startPoint, end: endPoint });
+
+      // Optional branching
+      if (branchFactor > 0) {
+        const branchAngle = Math.PI / 4; // 45°
+        const branchEnd1 = {
+          x: endPoint.x + radius * 0.3 * Math.cos(angleRad + branchAngle),
+          y: endPoint.y + radius * 0.3 * Math.sin(angleRad + branchAngle),
+        };
+        const branchEnd2 = {
+          x: endPoint.x + radius * 0.3 * Math.cos(angleRad - branchAngle),
+          y: endPoint.y + radius * 0.3 * Math.sin(angleRad - branchAngle),
+        };
+        newLines.push({ start: endPoint, end: branchEnd1 });
+        newLines.push({ start: endPoint, end: branchEnd2 });
+      }
+
+      return newLines;
+    });
+    setStep(s => s + 1);
+    rafRef.current = requestAnimationFrame(iterate);
+  };
 
   useEffect(() => {
-    if (!running) return;
-    const interval = setInterval(() => setLines(prev => iterateLines(prev, randomness, rotation)), speed);
-    return () => clearInterval(interval);
-  }, [running, speed, randomness, rotation]);
+    if (running) {
+      rafRef.current = requestAnimationFrame(iterate);
+    } else {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    }
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [running, angleIncrement, growthFactor, branchFactor]);
+
+  const handleReset = () => {
+    setRunning(false);
+    setLines([]);
+    setStep(0);
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
       <SimulationCanvas
         elements={lines}
         renderFn={(ctx, lines) => {
-          ctx.strokeStyle = "blue";
+          ctx.strokeStyle = "purple";
+          const path = new Path2D();
           lines.forEach(l => {
-            ctx.beginPath();
-            ctx.moveTo(l.start.x, l.start.y);
-            ctx.lineTo(l.end.x, l.end.y);
-            ctx.stroke();
+            path.moveTo(l.start.x, l.start.y);
+            path.lineTo(l.end.x, l.end.y);
           });
+          ctx.stroke(path);
         }}
       />
 
@@ -58,7 +90,7 @@ export default function SpiralGrowth() {
           {running ? "Pause" : "Start"}
         </button>
         <button
-          onClick={() => setLines(initialLines)}
+          onClick={handleReset}
           className="px-3 py-1 bg-gray-500 text-white rounded"
         >
           Reset
@@ -67,37 +99,36 @@ export default function SpiralGrowth() {
 
       <div className="flex flex-col gap-2 w-80">
         <label>
-          Speed (ms): {speed}
-          <input
-            type="range"
-            min={50}
-            max={2000}
-            value={speed}
-            onChange={e => setSpeed(Number(e.target.value))}
-            className="w-full"
-          />
-        </label>
-
-        <label>
-          Randomness: {randomness}
-          <input
-            type="range"
-            min={0}
-            max={50}
-            value={randomness}
-            onChange={e => setRandomness(Number(e.target.value))}
-            className="w-full"
-          />
-        </label>
-
-        <label>
-          Rotation (deg per iteration): {rotation}
+          Angle Increment: {angleIncrement}°
           <input
             type="range"
             min={5}
             max={45}
-            value={rotation}
-            onChange={e => setRotation(Number(e.target.value))}
+            value={angleIncrement}
+            onChange={e => setAngleIncrement(Number(e.target.value))}
+            className="w-full"
+          />
+        </label>
+        <label>
+          Growth Factor: {growthFactor}
+          <input
+            type="range"
+            min={1}
+            max={20}
+            value={growthFactor}
+            onChange={e => setGrowthFactor(Number(e.target.value))}
+            className="w-full"
+          />
+        </label>
+        <label>
+          Branch Factor: {branchFactor}
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.1}
+            value={branchFactor}
+            onChange={e => setBranchFactor(Number(e.target.value))}
             className="w-full"
           />
         </label>
