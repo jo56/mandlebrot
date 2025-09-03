@@ -7,7 +7,7 @@ type Line = { start: Point; end: Point };
 
 // Initial line for FractalLine1
 const initialLines: Line[] = [
-  { start: { x: 300, y: 300 }, end: { x: 400, y: 300 } }
+  { start: { x: 100, y: 300 }, end: { x: 600, y: 300 } }
 ];
 
 // Function to iterate lines with randomness

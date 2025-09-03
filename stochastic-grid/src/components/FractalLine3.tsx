@@ -12,12 +12,12 @@ const initialTriangle: Line[] = [
 ];
 
 // Function to iterate lines with random splits
-function iterateLines(lines: Line[]): Line[] {
+function iterateLines(lines: Line[], randomness: number): Line[] {
   const newLines: Line[] = [];
   lines.forEach(line => {
     const midX = (line.start.x + line.end.x) / 2;
     const midY = (line.start.y + line.end.y) / 2;
-    const offset = (Math.random() - 0.5) * 40; // randomness factor
+    const offset = (Math.random() - 0.5) * randomness;
 
     newLines.push(
       { start: line.start, end: { x: midX, y: midY + offset } },
@@ -31,6 +31,8 @@ export default function FractalLine3() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [lines, setLines] = useState<Line[]>(initialTriangle);
   const [running, setRunning] = useState(true);
+  const [speed, setSpeed] = useState(500); // ms per iteration
+  const [randomness, setRandomness] = useState(40); // offset size
 
   // Render lines on canvas
   useEffect(() => {
@@ -55,13 +57,13 @@ export default function FractalLine3() {
   useEffect(() => {
     if (!running) return;
     const interval = setInterval(() => {
-      setLines(prev => iterateLines(prev));
-    }, 500); // 500ms per iteration
+      setLines(prev => iterateLines(prev, randomness));
+    }, speed);
     return () => clearInterval(interval);
-  }, [running]);
+  }, [running, speed, randomness]);
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-4">
       <canvas
         ref={canvasRef}
         width={600}
@@ -81,6 +83,30 @@ export default function FractalLine3() {
         >
           Reset
         </button>
+      </div>
+      <div className="flex flex-col gap-2 w-80">
+        <label>
+          Iteration Speed (ms): {speed}
+          <input
+            type="range"
+            min={50}
+            max={2000}
+            value={speed}
+            onChange={e => setSpeed(Number(e.target.value))}
+            className="w-full"
+          />
+        </label>
+        <label>
+          Randomness: {randomness}
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={randomness}
+            onChange={e => setRandomness(Number(e.target.value))}
+            className="w-full"
+          />
+        </label>
       </div>
     </div>
   );

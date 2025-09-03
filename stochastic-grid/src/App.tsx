@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import StochasticGrid from "./components/grid";
-import { FractalLine1 } from "./components/FractalLine1";
+import FractalLine1  from "./components/FractalLine1";
 import FractalLine2 from "./components/FractalLine2";
 import FractalLine3 from "./components/FractalLine3";
-import FractalLine4 from "./components/FractalLine4";
 
 export default function App() {
   type Simulation =
   | "grid"
   | "fractal1"
   | "fractal2"
-  | "fractal3"
-  | "fractal4";
+  | "fractal3";
 
 const [sim, setSim] = useState<Simulation>("grid");
 
   return (
-    <div className="p-4 flex flex-col items-center gap-4">
-      <h1 className="text-2xl font-bold">Complexity Simulator</h1>
+    <div className="h-screen w-screen flex justify-center items-center bg-gray-100">
+      <div className="flex flex-col items-center gap-6 p-6 bg-white rounded-xl shadow-lg max-h-full overflow-auto">
+        <h1 className="text-3xl font-bold">Complexity Simulator</h1>
 
       {/* Simulation Switcher */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 flex-wrap justify-center">
       <button
         onClick={() => setSim("grid")}
         className={`px-3 py-1 rounded ${sim === "grid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
@@ -45,12 +44,6 @@ const [sim, setSim] = useState<Simulation>("grid");
       >
         Fractal Line 3
       </button>
-      <button
-        onClick={() => setSim("fractal4")}
-        className={`px-3 py-1 rounded ${sim === "fractal4" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-      >
-        Fractal Line 4
-      </button>
     </div>
 
 
@@ -60,7 +53,7 @@ const [sim, setSim] = useState<Simulation>("grid");
       {sim === "fractal1" && <FractalLine1 />}
       {sim === "fractal2" && <FractalLine2 />}
       {sim === "fractal3" && <FractalLine3 />}
-      {sim === "fractal4" && <FractalLine4 />}
+    </div>
     </div>
     </div>
   );
