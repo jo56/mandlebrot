@@ -30,11 +30,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-screen bg-gray-100 grid place-items-center p-6">
-      <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-xl shadow-lg w-full max-w-4xl">
+  <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-xl shadow-lg w-full overflow-x-auto">
+    
         <h1 className="text-3xl font-bold text-center">Complexity Simulator</h1>
 
         {/* Simulation Switcher */}
-        <div className="flex gap-2 flex-wrap justify-center">
+        <div className="w-full flex justify-center">
           {/* Existing patterns */}
           <button onClick={() => setSim("grid")} className={`px-4 py-2 rounded ${sim === "grid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Stochastic Grid</button>
           <button onClick={() => setSim("fractal1")} className={`px-4 py-2 rounded ${sim === "fractal1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Line 1</button>
@@ -52,8 +53,7 @@ export default function App() {
         </div>
 
         {/* Simulation Render */}
-        <div className="w-full flex justify-center">
-          <div className="w-full max-w-full flex justify-center">
+        <div className="w-full flex justify-center overflow-x-auto">
             {sim === "grid" && <StochasticGrid />}
             {sim === "fractal1" && <FractalLine1 />}
             {sim === "fractal2" && <FractalLine2 />}
@@ -64,7 +64,6 @@ export default function App() {
             {sim === "radial" && <RadialFan />}
             {sim === "star" && <RecursiveStar />}
             {sim === "spiral" && <SpiralGrowth />}
-          </div>
         </div>
       </div>
     </div>
