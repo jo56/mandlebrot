@@ -1,12 +1,12 @@
 // App.tsx
 import React, { useState } from "react";
-import StochasticGrid from "./components/Grid";
-import FractalLine1 from "./components/FractalLines/FractalLine1";
-import FractalLine2 from "./components/FractalLines/FractalLine2";
-import FractalLine3 from "./components/FractalLines/FractalLine3";
-import FractalTriangle from "./components/FancyLines/FractalTriangle";
-import BranchingTree from "./components/BranchingTree";
-import ZigZagLine from "./components/FancyLines/ZigZagLine";
+import StochasticGrid from "./components/patterns/Misc/Grid";
+import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
+import FractalLine2 from "./components/patterns/FractalLines/FractalLine2";
+import FractalLine3 from "./components/patterns/FractalLines/FractalLine3";
+import FractalTriangle from "./components/patterns/FractalLines/FancyLines/FractalTriangle";
+import BranchingTree from "./components/patterns/BranchingPatterns/BranchingTree";
+import ZigZagLine from "./components/patterns/FractalLines/FancyLines/ZigZagLine";
 
 export default function App() {
   type Simulation =
@@ -70,14 +70,6 @@ export default function App() {
             Triangle
           </button>
           <button
-            onClick={() => setSim("tree")}
-            className={`px-4 py-2 rounded ${
-              sim === "tree" ? "bg-blue-500 text-white" : "bg-gray-300"
-            }`}
-          >
-            Branching Tree
-          </button>
-          <button
             onClick={() => setSim("zigzag")}
             className={`px-4 py-2 rounded ${
               sim === "zigzag" ? "bg-blue-500 text-white" : "bg-gray-300"
@@ -85,6 +77,15 @@ export default function App() {
           >
             Zig-Zag Line
           </button>
+          <button
+            onClick={() => setSim("tree")}
+            className={`px-4 py-2 rounded ${
+              sim === "tree" ? "bg-blue-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Branching Tree
+          </button>
+          
         </div>
 
         {/* Simulation Render */}

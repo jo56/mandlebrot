@@ -1,51 +1,44 @@
 import React, { useState, useEffect } from "react";
-import SimulationCanvas from "./Utils/Canvas";
+import SimulationCanvas from "../../../utils/Canvas";
 
 type Point = { x: number; y: number };
 type Line = { start: Point; end: Point };
 
 const initialLines: Line[] = [
-  { start: { x: 300, y: 400 }, end: { x: 300, y: 300 } },
+  { start: { x: 100, y: 300 }, end: { x: 500, y: 300 } },
 ];
 
-function iterateLines(lines: Line[], randomness: number, angleSpread: number): Line[] {
+function iterateLines(lines: Line[], randomness: number): Line[] {
   const newLines: Line[] = [];
   lines.forEach(line => {
-    const dx = line.end.x - line.start.x;
-    const dy = line.end.y - line.start.y;
-
-    // Two branches
-    for (let a of [-angleSpread, angleSpread]) {
-      const length = Math.sqrt(dx * dx + dy * dy) * 0.7;
-      const angle = Math.atan2(dy, dx) + (a + (Math.random() - 0.5) * randomness) * (Math.PI / 180);
-      const newEnd = { x: line.end.x + Math.cos(angle) * length, y: line.end.y + Math.sin(angle) * length };
-      newLines.push({ start: line.end, end: newEnd });
-    }
+    const midX = (line.start.x + line.end.x) / 2;
+    const midY = (line.start.y + line.end.y) / 2 + (Math.random() - 0.5) * randomness;
+    newLines.push({ start: line.start, end: { x: midX, y: midY } });
+    newLines.push({ start: { x: midX, y: midY }, end: line.end });
   });
   return newLines;
 }
 
-export default function BranchingTree() {
+export default function ZigZagLine() {
   const [lines, setLines] = useState<Line[]>(initialLines);
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(500);
-  const [randomness, setRandomness] = useState(10);
-  const [angleSpread, setAngleSpread] = useState(30);
+  const [randomness, setRandomness] = useState(20);
 
   useEffect(() => {
     if (!running) return;
     const interval = setInterval(() => {
-      setLines(prev => iterateLines(prev, randomness, angleSpread));
+      setLines(prev => iterateLines(prev, randomness));
     }, speed);
     return () => clearInterval(interval);
-  }, [running, speed, randomness, angleSpread]);
+  }, [running, speed, randomness]);
 
   return (
     <div className="flex flex-col items-center gap-4">
       <SimulationCanvas
         elements={lines}
         renderFn={(ctx, lines) => {
-          ctx.strokeStyle = "green";
+          ctx.strokeStyle = "purple";
           lines.forEach(line => {
             ctx.beginPath();
             ctx.moveTo(line.start.x, line.start.y);
@@ -70,10 +63,6 @@ export default function BranchingTree() {
         <label>
           Randomness: {randomness}
           <input type="range" min={0} max={50} value={randomness} onChange={e => setRandomness(Number(e.target.value))} className="w-full" />
-        </label>
-        <label>
-          Branch Angle: {angleSpread}
-          <input type="range" min={10} max={90} value={angleSpread} onChange={e => setAngleSpread(Number(e.target.value))} className="w-full" />
         </label>
       </div>
     </div>
