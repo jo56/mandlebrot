@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SimulationCanvas from "./Canvas";
+import SimulationCanvas from "./Utils/Canvas";
 
 type Point = { x: number; y: number };
 type Line = { start: Point; end: Point };
