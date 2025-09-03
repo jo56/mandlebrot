@@ -45,7 +45,7 @@ function iterateLines(
 
 export default function FractalLine1() {
   const [lines, setLines] = useState<Line[]>(initialLines);
-  const [running, setRunning] = useState(true);
+  const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(300); // ms per iteration
   const [randomness, setRandomness] = useState(40); 
   const [lengthFactor, setLengthFactor] = useState(1); // optional for future tweaks

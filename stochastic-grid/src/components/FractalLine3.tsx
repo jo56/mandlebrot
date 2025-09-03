@@ -30,7 +30,7 @@ function iterateLines(lines: Line[], randomness: number): Line[] {
 export default function FractalLine3() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [lines, setLines] = useState<Line[]>(initialTriangle);
-  const [running, setRunning] = useState(true);
+  const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(500); // ms per iteration
   const [randomness, setRandomness] = useState(40); // offset size
 
