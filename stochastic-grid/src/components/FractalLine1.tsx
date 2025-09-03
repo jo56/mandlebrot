@@ -1,6 +1,6 @@
 // src/components/FractalLine1.tsx
 import React, { useRef, useEffect, useState } from "react";
-import SimulationCanvas from "./canvas";
+import SimulationCanvas from "./Canvas";
 
 type Point = { x: number; y: number };
 type Line = { start: Point; end: Point };

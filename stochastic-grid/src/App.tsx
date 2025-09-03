@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useState } from "react";
-import StochasticGrid from "./components/grid";
+import StochasticGrid from "./components/Grid";
 import FractalLine1 from "./components/FractalLine1";
 import FractalLine2 from "./components/FractalLine2";
 import FractalLine3 from "./components/FractalLine3";
