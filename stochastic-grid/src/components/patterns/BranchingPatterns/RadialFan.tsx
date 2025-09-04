@@ -49,10 +49,40 @@ export default function RadialFan() {
           lines.forEach(l => { ctx.beginPath(); ctx.moveTo(l.start.x, l.start.y); ctx.lineTo(l.end.x, l.end.y); ctx.stroke(); });
         }}
       />
-      <div className="flex gap-2">
-        <button onClick={() => setRunning(r => !r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running ? "Pause" : "Start"}</button>
-        <button onClick={() => setLines(initialLines)} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
-      </div>
+          <div className="flex gap-2">
+      <button
+        onClick={() => setRunning(r => !r)}
+        className="px-3 py-1 bg-blue-500 text-white rounded"
+      >
+        {running ? "Pause" : "Start"}
+      </button>
+      <button
+        onClick={() => setLines(initialLines)}
+        className="px-3 py-1 bg-gray-500 text-white rounded"
+      >
+        Reset
+      </button>
+          <button
+      onClick={() => {
+        const maxSteps = 10; // cap steps to avoid freeze
+        const randomSteps = Math.floor(Math.random() * maxSteps) + 3; // at least 3
+        let newLines: Line[] = initialLines;
+
+        for (let i = 0; i < randomSteps; i++) {
+          newLines = iterateLines(newLines, randomness, spread);
+          if (newLines.length > 10000) break; // hard safety cap
+        }
+
+        setLines(newLines);
+        setRunning(false);
+      }}
+      className="px-3 py-1 bg-green-500 text-white rounded"
+    >
+      Randomize
+    </button>
+
+    </div>
+
       <div className="flex flex-col gap-2 w-80">
         <label>Speed (ms): {speed}<input type="range" min={50} max={2000} value={speed} onChange={e => setSpeed(Number(e.target.value))} className="w-full"/></label>
         <label>Randomness: {randomness}<input type="range" min={0} max={50} value={randomness} onChange={e => setRandomness(Number(e.target.value))} className="w-full"/></label>

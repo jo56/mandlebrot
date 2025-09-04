@@ -83,19 +83,61 @@ export default function SpiralGrowth() {
       />
 
       <div className="flex gap-2">
-        <button
-          onClick={() => setRunning(r => !r)}
-          className="px-3 py-1 bg-blue-500 text-white rounded"
-        >
-          {running ? "Pause" : "Start"}
-        </button>
-        <button
-          onClick={handleReset}
-          className="px-3 py-1 bg-gray-500 text-white rounded"
-        >
-          Reset
-        </button>
-      </div>
+  <button
+    onClick={() => setRunning(r => !r)}
+    className="px-3 py-1 bg-blue-500 text-white rounded"
+  >
+    {running ? "Pause" : "Start"}
+  </button>
+  <button
+    onClick={handleReset}
+    className="px-3 py-1 bg-gray-500 text-white rounded"
+  >
+    Reset
+  </button>
+  <button
+    onClick={() => {
+      const randomSteps = Math.floor(Math.random() * 100);
+      let newLines: Line[] = [];
+      let tempStep = 0;
+      for (let i = 0; i < randomSteps; i++) {
+        const radius = tempStep * growthFactor;
+        const angleRad = (tempStep * angleIncrement * Math.PI) / 180;
+        const startPoint = newLines.length === 0 ? center : newLines[newLines.length - 1].end;
+
+        const endPoint: Point = {
+          x: center.x + radius * Math.cos(angleRad),
+          y: center.y + radius * Math.sin(angleRad),
+        };
+
+        newLines.push({ start: startPoint, end: endPoint });
+
+        if (branchFactor > 0) {
+          const branchAngle = Math.PI / 4;
+          const branchEnd1 = {
+            x: endPoint.x + radius * 0.3 * Math.cos(angleRad + branchAngle),
+            y: endPoint.y + radius * 0.3 * Math.sin(angleRad + branchAngle),
+          };
+          const branchEnd2 = {
+            x: endPoint.x + radius * 0.3 * Math.cos(angleRad - branchAngle),
+            y: endPoint.y + radius * 0.3 * Math.sin(angleRad - branchAngle),
+          };
+          newLines.push({ start: endPoint, end: branchEnd1 });
+          newLines.push({ start: endPoint, end: branchEnd2 });
+        }
+
+        tempStep++;
+      }
+      setLines(newLines);
+      setStep(randomSteps);
+      setRunning(false);
+    }}
+    className="px-3 py-1 bg-green-500 text-white rounded"
+  >
+    Randomize
+  </button>
+</div>
+
 
       <div className="flex flex-col gap-2 w-80">
         <label>
