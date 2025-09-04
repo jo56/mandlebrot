@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import StochasticGrid from "./components/patterns/Misc/Grid";
+import WavyGrid from "./components/patterns/NewComponents/WavyGrid";
 import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
 import FractalLine2 from "./components/patterns/FractalLines/FractalLine2";
 import Triangle1 from "./components/patterns/FractalLines/Triangle1";
@@ -12,9 +13,14 @@ import RadialFan from "./components/patterns/BranchingPatterns/RadialFan";
 import RecursiveStar from "./components/patterns/BranchingPatterns/RecursiveStar";
 import SpiralGrowth from "./components/patterns/BranchingPatterns/SpiralGrowth";
 
+import KochSnowflake from "./components/patterns/NewComponents/KochSnowflake";
+import NestedPolygon from "./components/patterns/NewComponents/NestedPolygon";
+import Sunburst from "./components/patterns/NewComponents/Sunburst";
+
 export default function App() {
   type Simulation =
     | "grid"
+    | "wavygrid"
     | "fractal1"
     | "fractal2"
     | "fractal3"
@@ -24,7 +30,10 @@ export default function App() {
     | "radial"
     | "star"
     | "spiral"
-    | "leaf";
+    | "leaf"
+    | "snowflake"
+    | "polygon"
+    | "sunburst";
 
   const [sim, setSim] = useState<Simulation>("grid");
 
@@ -49,12 +58,17 @@ export default function App() {
           <button onClick={() => setSim("radial")} className={`px-4 py-2 rounded ${sim === "radial" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Fan</button>
           <button onClick={() => setSim("star")} className={`px-4 py-2 rounded ${sim === "star" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Recursive Star</button>
           <button onClick={() => setSim("spiral")} className={`px-4 py-2 rounded ${sim === "spiral" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Spiral Growth</button>
-          
+          <button onClick={() => setSim("snowflake")} className={`px-4 py-2 rounded ${sim === "snowflake" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Koch Snowflake</button>
+          <button onClick={() => setSim("wavygrid")} className={`px-4 py-2 rounded ${sim === "wavygrid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Grid</button>
+          <button onClick={() => setSim("polygon")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Nested Polygon</button>
+          <button onClick={() => setSim("sunburst")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Sunburst</button>
+
         </div>
 
         {/* Simulation Render */}
         <div className="w-full flex justify-center overflow-x-auto">
             {sim === "grid" && <StochasticGrid />}
+            {sim === "wavygrid" && <WavyGrid />}
             {sim === "fractal1" && <FractalLine1 />}
             {sim === "fractal2" && <FractalLine2 />}
             {sim === "fractal3" && <Triangle1 />}
@@ -64,6 +78,9 @@ export default function App() {
             {sim === "radial" && <RadialFan />}
             {sim === "star" && <RecursiveStar />}
             {sim === "spiral" && <SpiralGrowth />}
+            {sim === "snowflake" && <KochSnowflake/>}
+            {sim === "polygon" && <NestedPolygon/>}
+            {sim === "sunburst" && <Sunburst/>}
         </div>
       </div>
     </div>
