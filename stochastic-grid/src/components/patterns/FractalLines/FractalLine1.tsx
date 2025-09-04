@@ -44,8 +44,28 @@ export default function FractalLine1() {
 }, [running, lines, randomness, lengthFactor, speed]);
 
   const randomize = () => {
-    setLines(prev => iterateLines(prev, randomness, lengthFactor));
-  };
+  const steps = Math.floor(Math.random() * 6) + 2; // 2–7 iterations
+  let newLines = [...lines];
+
+  for (let i = 0; i < steps; i++) {
+    newLines = iterateLines(newLines, randomness, lengthFactor).map(line => {
+      // random small jitter per line
+      const jitterX = (Math.random() - 0.5) * 2; 
+      const jitterY = (Math.random() - 0.5) * 2;
+      return {
+        start: { x: line.start.x + jitterX, y: line.start.y + jitterY },
+        end: { x: line.end.x + jitterX, y: line.end.y + jitterY },
+      };
+    });
+
+    if (newLines.length > 10000) break; // safety cap
+  }
+
+  setLines(newLines);
+  setCurrentStep(prev => prev + steps);
+  setRunning(false);
+};
+
 
   return (
     <div className="flex flex-col items-center gap-4">
