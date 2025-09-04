@@ -1,6 +1,6 @@
 // src/components/AnimatedPatterns.tsx
 import React, { useState, useEffect, useRef } from "react";
-import SimulationCanvas from "../../utils/Canvas";
+import SimulationCanvas from "../utils/Canvas";
 
 // -----------------------------
 // 1. Growing Branches

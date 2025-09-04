@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+// Original imports
 import StochasticGrid from "./components/patterns/Misc/Grid";
 import WavyGrid from "./components/patterns/NewComponents/WavyGrid";
 import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
@@ -8,7 +10,6 @@ import FractalTriangle from "./components/patterns/FractalLines/FancyLines/Trian
 import ZigZagLine from "./components/patterns/FractalLines/FancyLines/ZigZagLine";
 import BranchingTree from "./components/patterns/BranchingPatterns/BranchingTree";
 
-// New patterns
 import RadialFan from "./components/patterns/BranchingPatterns/RadialFan";
 import RecursiveStar from "./components/patterns/BranchingPatterns/RecursiveStar";
 import SpiralGrowth from "./components/patterns/BranchingPatterns/SpiralGrowth";
@@ -35,126 +36,75 @@ import NoiseWavyGrid from "./components/patterns/NewestPatterns/NoiseWavy";
 import RecursiveSquares from "./components/patterns/NewestPatterns/REcursiveSquares";
 import WavefrontRipples from "./components/patterns/NewestPatterns/WavefrontRipples";
 
-export default function App() {
-  type Simulation =
-    | "grid"
-    | "wavygrid"
-    | "fractal1"
-    | "fractal2"
-    | "fractal3"
-    | "triangle"
-    | "zigzag"
-    | "tree"
-    | "radial"
-    | "star"
-    | "spiral"
-    | "leaf"
-    | "snowflake"
-    | "polygon"
-    | "sunburst"
-    | "sunburst2"
-    | "aniwavygrid"
-    | "fractaltree"
-    | "particleflow"
-    | "rings"
-    | "f-spiral"
-    | "noise"
-    | "osiclator"
-    | "particleflow2"
-    | "radialwave"
-    | "rotatingcircles"
-    | "rotatingsquares"
-    | "rotatingstarfield"
-    | "spiralwaves"
-    | "growingbranch"
-    | "noisewavy"
-    | "recursivesquares"
-    | "wavefrontripples";
+// Large pattern set
+import * as LargePatterns from "./components/patterns/LargePatternSet";
 
-  const [sim, setSim] = useState<Simulation>("grid");
+const SIMULATIONS = {
+  grid: { component: StochasticGrid, label: "Stochastic Grid" },
+  wavygrid: { component: WavyGrid, label: "Wavy Grid" },
+  fractal1: { component: FractalLine1, label: "Fractal Line" },
+  fractal2: { component: FractalLine2, label: "Fractal Steps" },
+  fractal3: { component: Triangle1, label: "Fractal Triangle 1" },
+  triangle: { component: FractalTriangle, label: "Fractal Triangle 2" },
+  zigzag: { component: ZigZagLine, label: "Zig-Zag Line" },
+  tree: { component: BranchingTree, label: "Branching Tree" },
+  radial: { component: RadialFan, label: "Radial Fan" },
+  star: { component: RecursiveStar, label: "Recursive Star" },
+  spiral: { component: SpiralGrowth, label: "Spiral Growth" },
+  snowflake: { component: KochSnowflake, label: "Koch Snowflake" },
+  polygon: { component: NestedPolygon, label: "Nested Polygon" },
+  sunburst: { component: Sunburst, label: "Radial Sunburst" },
+  sunburst2: { component: Spokes, label: "Animated Spokes" },
+  aniwavygrid: { component: AnimatedWavyGrid, label: "Animated Wavy Grid" },
+  fractaltree: { component: FractalTree, label: "Fractal Tree" },
+  particleflow: { component: ParticleFlow, label: "Particle Flow" },
+  rings: { component: ExpandingRings, label: "Expanding Rings" },
+  "f-spiral": { component: FractalSpiral, label: "Fractal Spiral" },
+  noise: { component: NoiseLandscape, label: "Noise Landscape" },
+  oscilator: { component: Oscilator, label: "Oscilator" },
+  particleflow2: { component: FlowField, label: "Bouncing Particles" },
+  radialwave: { component: RadialPulses, label: "Radial Wave Pulses" },
+  rotatingcircles: { component: RotatingCircles, label: "Rotating Circles" },
+  rotatingsquares: { component: RotatingSquares, label: "Rotating Squares" },
+  rotatingstarfield: { component: RotatingStarfield, label: "Rotating Starfield" },
+  spiralwaves: { component: SpiralWaves, label: "Spiral Waves" },
+  growingbranch: { component: GrowingBranches, label: "Growing Branch" },
+  noisewavy: { component: NoiseWavyGrid, label: "Noise Wavy Grid" },
+  recursivesquares: { component: RecursiveSquares, label: "Recursive Squares" },
+  wavefrontripples: { component: WavefrontRipples, label: "Wavefront Ripples" },
+
+  // Spread LargePatterns dynamically
+  ...Object.fromEntries(
+    Object.entries(LargePatterns).map(([key, component]) => [key.toLowerCase(), { component, label: key }])
+  ),
+};
+
+export default function App() {
+  const [sim, setSim] = useState<keyof typeof SIMULATIONS>("grid");
+
+  const SimComponent = SIMULATIONS[sim].component;
 
   return (
     <div className="min-h-screen w-screen bg-gray-100 grid place-items-center p-6">
-  <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-xl shadow-lg w-full overflow-x-auto">
-    
+      <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-xl shadow-lg w-full overflow-x-auto">
         <h1 className="text-3xl font-bold text-center">Complexity Simulator</h1>
 
         {/* Simulation Switcher */}
-        <div className="w-full flex justify-center">
-          {/* Existing patterns */}
-          <button onClick={() => setSim("grid")} className={`px-4 py-2 rounded ${sim === "grid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Stochastic Grid</button>
-          <button onClick={() => setSim("fractal2")} className={`px-4 py-2 rounded ${sim === "fractal1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Steps</button>
-          <button onClick={() => setSim("fractal1")} className={`px-4 py-2 rounded ${sim === "fractal2" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Line</button>
-          <button onClick={() => setSim("fractal3")} className={`px-4 py-2 rounded ${sim === "fractal3" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Triangle 1</button>
-          <button onClick={() => setSim("triangle")} className={`px-4 py-2 rounded ${sim === "triangle" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Triangle 2</button>
-          <button onClick={() => setSim("zigzag")} className={`px-4 py-2 rounded ${sim === "zigzag" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Zig-Zag Line</button>
-          <button onClick={() => setSim("tree")} className={`px-4 py-2 rounded ${sim === "tree" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Branching Tree</button>
-
-          {/* New patterns */}
-          <button onClick={() => setSim("radial")} className={`px-4 py-2 rounded ${sim === "radial" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Fan</button>
-          <button onClick={() => setSim("star")} className={`px-4 py-2 rounded ${sim === "star" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Recursive Star</button>
-          <button onClick={() => setSim("spiral")} className={`px-4 py-2 rounded ${sim === "spiral" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Spiral Growth</button>
-          <button onClick={() => setSim("snowflake")} className={`px-4 py-2 rounded ${sim === "snowflake" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Koch Snowflake</button>
-          <button onClick={() => setSim("polygon")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Nested Polygon</button>
-          <button onClick={() => setSim("wavygrid")} className={`px-4 py-2 rounded ${sim === "wavygrid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Lines</button>
-          
-          <button onClick={() => setSim("sunburst")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Sunburst</button>
-          <button onClick={() => setSim("sunburst2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Animated Spokes</button>
-          <button onClick={() => setSim("aniwavygrid")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Grid</button>
-          <button onClick={() => setSim("fractaltree")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Tree</button>
-          <button onClick={() => setSim("particleflow")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Particle Flow</button>
-
-          <button onClick={() => setSim("rings")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Expanding Rings</button>
-          <button onClick={() => setSim("f-spiral")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Spiral</button>
-          <button onClick={() => setSim("noise")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Noise Landscape</button>
-          <button onClick={() => setSim("particleflow2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Bouncing Particles</button>
-          <button onClick={() => setSim("radialwave")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Wave Pulses</button>
-          <button onClick={() => setSim("rotatingcircles")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Circles</button>
-          <button onClick={() => setSim("rotatingsquares")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Squares</button>
-          <button onClick={() => setSim("rotatingstarfield")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Starfield</button>
-          <button onClick={() => setSim("spiralwaves")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Spiral Waves</button>
-
-          <button onClick={() => setSim("growingbranch")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Growing Branch</button>
-          <button onClick={() => setSim("noisewavy")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Noise Grid</button>
-          <button onClick={() => setSim("recursivesquares")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Recursive Squares</button>
-          <button onClick={() => setSim("wavefrontripples")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavefront Ripples</button>
-
+        <div className="w-full flex flex-wrap justify-center gap-2">
+          {Object.entries(SIMULATIONS).map(([key, { label }]) => (
+            <button
+              key={key}
+              onClick={() => setSim(key as keyof typeof SIMULATIONS)}
+              className={`px-4 py-2 rounded ${sim === key ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
         {/* Simulation Render */}
-        <div className="w-full flex justify-center overflow-x-auto">
-            {sim === "grid" && <StochasticGrid />}
-            {sim === "wavygrid" && <WavyGrid />}
-            {sim === "fractal1" && <FractalLine1 />}
-            {sim === "fractal2" && <FractalLine2 />}
-            {sim === "fractal3" && <Triangle1 />}
-            {sim === "triangle" && <FractalTriangle />}
-            {sim === "zigzag" && <ZigZagLine />}
-            {sim === "tree" && <BranchingTree />}
-            {sim === "radial" && <RadialFan />}
-            {sim === "star" && <RecursiveStar />}
-            {sim === "spiral" && <SpiralGrowth />}
-            {sim === "snowflake" && <KochSnowflake/>}
-            {sim === "polygon" && <NestedPolygon/>}
-            {sim === "sunburst" && <Sunburst/>}
-            {sim === "sunburst2" && <Spokes/>}
-            {sim === "aniwavygrid" && <AnimatedWavyGrid/>}
-            {sim === "fractaltree" && <FractalTree/>}
-            {sim === "particleflow" && <ParticleFlow/>}
-            {sim === "rings" && <ExpandingRings/>}
-            {sim === "f-spiral"&& <FractalSpiral/>}
-            {sim === "noise" && <NoiseLandscape/>}
-            {sim ===  "particleflow2"  && <FlowField/>}
-    {sim ===  "radialwave"  && <RadialPulses/>}
-    {sim ===  "rotatingcircles"   && <RotatingCircles/>}
-    {sim ===  "rotatingsquares"   && <RotatingSquares/>}
-    {sim ===  "rotatingstarfield"   && <RotatingStarfield/>}
-    {sim ===  "spiralwaves" && <SpiralWaves/>}
-    {sim ===  "growingbranch" && <GrowingBranches/>}
-    {sim ===  "noisewavy" && <NoiseWavyGrid/>}
-    {sim ===  "recursivesquares" && <RecursiveSquares/>}
-    {sim ===  "wavefrontripples" && <WavefrontRipples/>}
-
+        <div className="w-full flex justify-center overflow-x-auto mt-4">
+          <SimComponent />
         </div>
       </div>
     </div>
