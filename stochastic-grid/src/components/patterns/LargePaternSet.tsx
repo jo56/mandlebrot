@@ -592,3 +592,246 @@ export function FractalLeaves(){
     </div>
   );
 }
+
+// -----------------------------
+// 11. Noise Waves
+// -----------------------------
+type NoisePoint = {x:number,y:number,phase:number};
+export function NoiseWaves() {
+  const cols=100;
+  const [points,setPoints]=useState<NoisePoint[]>([]);
+  const [running,setRunning]=useState(false);
+  const [amplitude,setAmplitude]=useState(20);
+  const [frequency,setFrequency]=useState(0.1);
+
+  useEffect(()=>{
+    setPoints(Array.from({length:cols},(_,i)=>({x:i*600/cols,y:300,phase:Math.random()*Math.PI*2})));
+  },[cols]);
+
+  useEffect(()=>{
+    if(!running) return;
+    const id=requestAnimationFrame(()=>{
+      setPoints(prev=>prev.map(p=>({...p,phase:p.phase+frequency})));
+    });
+    return ()=>cancelAnimationFrame(id);
+  },[running,points,frequency]);
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <SimulationCanvas width={600} height={600} elements={points as any}
+        renderFn={(ctx,pts)=>{
+          ctx.strokeStyle="black";
+          ctx.beginPath();
+          (pts as NoisePoint[]).forEach((p,i)=>{
+            const y=300+Math.sin(p.phase)*amplitude;
+            if(i===0) ctx.moveTo(p.x,y);
+            else ctx.lineTo(p.x,y);
+          });
+          ctx.stroke();
+        }}
+      />
+      <div className="flex gap-2">
+        <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>
+      </div>
+      <label>Amplitude: {amplitude}<input type="range" min={5} max={100} value={amplitude} onChange={e=>setAmplitude(Number(e.target.value))} className="w-80"/></label>
+      <label>Frequency: {frequency.toFixed(2)}<input type="range" min={0.01} max={0.2} step={0.01} value={frequency} onChange={e=>setFrequency(Number(e.target.value))} className="w-80"/></label>
+    </div>
+  );
+}
+
+// -----------------------------
+// 12. Diagonal Grid
+// -----------------------------
+type GridLine = {x1:number,y1:number,x2:number,y2:number};
+export function DiagonalGrid() {
+  const [lines,setLines]=useState<GridLine[]>([]);
+  const [running,setRunning]=useState(false);
+  const [spacing,setSpacing]=useState(50);
+  const [speed,setSpeed]=useState(1);
+
+  useEffect(()=>{
+    const lns:GridLine[]=[];
+    for(let x=-600;x<1200;x+=spacing){
+      lns.push({x1:x,y1:0,x2:x+600,y2:600});
+    }
+    setLines(lns);
+  },[spacing]);
+
+  useEffect(()=>{
+    if(!running) return;
+    const id=requestAnimationFrame(()=>{
+      setLines(prev=>prev.map(l=>({x1:l.x1+speed,y1:l.y1,x2:l.x2+speed,y2:l.y2})));
+    });
+    return ()=>cancelAnimationFrame(id);
+  },[running,lines,speed]);
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <SimulationCanvas width={600} height={600} elements={lines as any}
+        renderFn={(ctx,lns)=>{
+          ctx.strokeStyle="black";
+          (lns as GridLine[]).forEach(l=>{
+            ctx.beginPath();
+            ctx.moveTo(l.x1,l.y1);
+            ctx.lineTo(l.x2,l.y2);
+            ctx.stroke();
+          });
+        }}
+      />
+      <div className="flex gap-2">
+        <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>
+      </div>
+      <label>Spacing: {spacing}<input type="range" min={10} max={100} value={spacing} onChange={e=>setSpacing(Number(e.target.value))} className="w-80"/></label>
+      <label>Speed: {speed}<input type="range" min={0.1} max={5} step={0.1} value={speed} onChange={e=>setSpeed(Number(e.target.value))} className="w-80"/></label>
+    </div>
+  );
+}
+
+// -----------------------------
+// 13. Expanding Squares
+// -----------------------------
+type Square={x:number,y:number,size:number};
+export function ExpandingSquares() {
+  const [squares,setSquares]=useState<Square[]>([]);
+  const [running,setRunning]=useState(false);
+  const [count,setCount]=useState(20);
+  const [growth,setGrowth]=useState(3);
+
+  useEffect(()=>{
+    setSquares(Array.from({length:count},()=>({x:300,y:300,size:0})));
+  },[count]);
+
+  useEffect(()=>{
+    if(!running) return;
+    const id=requestAnimationFrame(()=>{
+      setSquares(prev=>prev.map(s=>({...s,size:s.size+growth})));
+    });
+    return ()=>cancelAnimationFrame(id);
+  },[running,squares,growth]);
+
+  const handleReset=()=>setSquares(Array.from({length:count},()=>({x:300,y:300,size:0})));
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <SimulationCanvas width={600} height={600} elements={squares as any}
+        renderFn={(ctx,sqs)=>{
+          ctx.strokeStyle="black";
+          (sqs as Square[]).forEach(s=>{
+            ctx.strokeRect(s.x-s.size/2,s.y-s.size/2,s.size,s.size);
+          });
+        }}
+      />
+      <div className="flex gap-2">
+        <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>
+        <button onClick={handleReset} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
+      </div>
+      <label>Count: {count}<input type="range" min={5} max={50} value={count} onChange={e=>setCount(Number(e.target.value))} className="w-80"/></label>
+      <label>Growth: {growth}<input type="range" min={1} max={10} value={growth} onChange={e=>setGrowth(Number(e.target.value))} className="w-80"/></label>
+    </div>
+  );
+}
+
+// -----------------------------
+// 14. Converging Points
+// -----------------------------
+type ConvPoint={x:number,y:number};
+export function ConvergingPoints() {
+  const [points,setPoints]=useState<ConvPoint[]>([]);
+  const [running,setRunning]=useState(false);
+  const [count,setCount]=useState(100);
+  const [speed,setSpeed]=useState(2);
+
+  useEffect(()=>{
+    setPoints(Array.from({length:count},()=>({x:Math.random()*600,y:Math.random()*600})));
+  },[count]);
+
+  useEffect(()=>{
+    if(!running) return;
+    const id=requestAnimationFrame(()=>{
+      setPoints(prev=>prev.map(p=>{
+        const dx=300-p.x;
+        const dy=300-p.y;
+        const dist=Math.sqrt(dx*dx+dy*dy)||1;
+        return {x:p.x+dx/dist*speed,y:p.y+dy/dist*speed};
+      }));
+    });
+    return ()=>cancelAnimationFrame(id);
+  },[running,points,speed]);
+
+  const handleReset=()=>setPoints(Array.from({length:count},()=>({x:Math.random()*600,y:Math.random()*600})));
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <SimulationCanvas width={600} height={600} elements={points as any}
+        renderFn={(ctx,pts)=>{
+          ctx.fillStyle="black";
+          (pts as ConvPoint[]).forEach(p=>{
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,2,0,Math.PI*2);
+            ctx.fill();
+          });
+        }}
+      />
+      <div className="flex gap-2">
+        <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>
+        <button onClick={handleReset} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
+      </div>
+      <label>Count: {count}<input type="range" min={10} max={500} value={count} onChange={e=>setCount(Number(e.target.value))} className="w-80"/></label>
+      <label>Speed: {speed}<input type="range" min={0.1} max={10} step={0.1} value={speed} onChange={e=>setSpeed(Number(e.target.value))} className="w-80"/></label>
+    </div>
+  );
+}
+
+// -----------------------------
+// 15. Random Line Network
+// -----------------------------
+type RandLine={start:ConvPoint,end:ConvPoint};
+export function RandomLineNetwork() {
+  const [lines,setLines]=useState<RandLine[]>([]);
+  const [running,setRunning]=useState(false);
+  const [count,setCount]=useState(50);
+
+  useEffect(()=>{
+    setLines(Array.from({length:count},()=>({
+      start:{x:Math.random()*600,y:Math.random()*600},
+      end:{x:Math.random()*600,y:Math.random()*600}
+    })));
+  },[count]);
+
+  useEffect(()=>{
+    if(!running) return;
+    const id=requestAnimationFrame(()=>{
+      setLines(prev=>prev.map(l=>({
+        start:{x:l.start.x+(Math.random()-0.5)*2,y:l.start.y+(Math.random()-0.5)*2},
+        end:{x:l.end.x+(Math.random()-0.5)*2,y:l.end.y+(Math.random()-0.5)*2}
+      })));
+    });
+    return ()=>cancelAnimationFrame(id);
+  },[running,lines]);
+
+  const handleReset=()=>setLines(Array.from({length:count},()=>({
+    start:{x:Math.random()*600,y:Math.random()*600},
+    end:{x:Math.random()*600,y:Math.random()*600}
+  })));
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <SimulationCanvas width={600} height={600} elements={lines as any}
+        renderFn={(ctx,lns)=>{
+          ctx.strokeStyle="black";
+          (lns as RandLine[]).forEach(l=>{
+            ctx.beginPath();
+            ctx.moveTo(l.start.x,l.start.y);
+            ctx.lineTo(l.end.x,l.end.y);
+            ctx.stroke();
+          });
+        }}
+      />
+      <div className="flex gap-2">
+        <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>
+        <button onClick={handleReset} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
+      </div>
+      <label>Line Count: {count}<input type="range" min={10} max={200} value={count} onChange={e=>setCount(Number(e.target.value))} className="w-80"/></label>
+    </div>
+  );
+}
