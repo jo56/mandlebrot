@@ -37,9 +37,9 @@ export default function NoiseLandscape() {
       <div className="flex gap-2">
         <button onClick={() => setRunning(r => !r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running ? "Pause" : "Start"}</button>
       </div>
-      <label>Amplitude: {amplitude}<input type="range" min={10} max={200} value={amplitude} onChange={e => setAmplitude(Number(e.target.value))} className="w-80"/></label>
-      <label>Frequency: {frequency.toFixed(2)}<input type="range" min={0.01} max={0.5} step={0.01} value={frequency} onChange={e => setFrequency(Number(e.target.value))} className="w-80"/></label>
-      <label>Speed: {speed.toFixed(2)}<input type="range" min={0.01} max={0.2} step={0.01} value={speed} onChange={e => setSpeed(Number(e.target.value))} className="w-80"/></label>
+      <label>Amplitude: {amplitude}<input type="range" min={10} max={2000} value={amplitude} onChange={e => setAmplitude(Number(e.target.value))} className="w-80"/></label>
+      <label>Frequency: {frequency.toFixed(2)}<input type="range" min={0.01} max={1} step={0.01} value={frequency} onChange={e => setFrequency(Number(e.target.value))} className="w-80"/></label>
+      <label>Speed: {speed.toFixed(2)}<input type="range" min={0.01} max={0.1} step={0.005} value={speed} onChange={e => setSpeed(Number(e.target.value))} className="w-80"/></label>
     </div>
   );
 }

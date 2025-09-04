@@ -49,8 +49,8 @@ export default function FlowField() {
         <button onClick={() => setParticles([])} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
       </div>
       <div className="flex flex-col gap-2 w-80">
-        <label>Particle Count: {count}<input type="range" min={50} max={500} value={count} onChange={e => setCount(Number(e.target.value))} className="w-full"/></label>
-        <label>Speed: {speed}<input type="range" min={0.5} max={10} step={0.5} value={speed} onChange={e => setSpeed(Number(e.target.value))} className="w-full"/></label>
+        <label>Particle Count: {count}<input type="range" min={50} max={30000} value={count} onChange={e => setCount(Number(e.target.value))} className="w-full"/></label>
+        <label>Speed: {speed}<input type="range" min={0.2} max={10} step={0.5} value={speed} onChange={e => setSpeed(Number(e.target.value))} className="w-full"/></label>
         <label>Angle Step: {angleStep.toFixed(2)}<input type="range" min={0.01} max={0.5} step={0.01} value={angleStep} onChange={e => setAngleStep(Number(e.target.value))} className="w-full"/></label>
       </div>
     </div>

@@ -30,6 +30,10 @@ import RotatingCircles from "./components/patterns/NewestPatterns/RotatingCircle
 import RotatingSquares from "./components/patterns/NewestPatterns/RotatingSquares";
 import RotatingStarfield from "./components/patterns/NewestPatterns/RotatingStarfield";
 import SpiralWaves from "./components/patterns/NewestPatterns/SpiralWaves";
+import GrowingBranches from "./components/patterns/NewestPatterns/GrowingBranch";
+import NoiseWavyGrid from "./components/patterns/NewestPatterns/NoiseWavy";
+import RecursiveSquares from "./components/patterns/NewestPatterns/REcursiveSquares";
+import WavefrontRipples from "./components/patterns/NewestPatterns/WavefrontRipples";
 
 export default function App() {
   type Simulation =
@@ -61,7 +65,11 @@ export default function App() {
     | "rotatingcircles"
     | "rotatingsquares"
     | "rotatingstarfield"
-    | "spiralwaves";
+    | "spiralwaves"
+    | "growingbranch"
+    | "noisewavy"
+    | "recursivesquares"
+    | "wavefrontripples";
 
   const [sim, setSim] = useState<Simulation>("grid");
 
@@ -99,12 +107,17 @@ export default function App() {
           <button onClick={() => setSim("rings")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Expanding Rings</button>
           <button onClick={() => setSim("f-spiral")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Spiral</button>
           <button onClick={() => setSim("noise")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Noise Landscape</button>
-          <button onClick={() => setSim("particleflow2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Particle Flow 2</button>
+          <button onClick={() => setSim("particleflow2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Bouncing Particles</button>
           <button onClick={() => setSim("radialwave")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Wave Pulses</button>
           <button onClick={() => setSim("rotatingcircles")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Circles</button>
           <button onClick={() => setSim("rotatingsquares")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Squares</button>
           <button onClick={() => setSim("rotatingstarfield")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Starfield</button>
           <button onClick={() => setSim("spiralwaves")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Spiral Waves</button>
+
+          <button onClick={() => setSim("growingbranch")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Growing Branch</button>
+          <button onClick={() => setSim("noisewavy")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Noise Grid</button>
+          <button onClick={() => setSim("recursivesquares")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Recursive Squares</button>
+          <button onClick={() => setSim("wavefrontripples")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavefront Ripples</button>
 
         </div>
 
@@ -136,7 +149,12 @@ export default function App() {
     {sim ===  "rotatingcircles"   && <RotatingCircles/>}
     {sim ===  "rotatingsquares"   && <RotatingSquares/>}
     {sim ===  "rotatingstarfield"   && <RotatingStarfield/>}
-    {sim ===  "spiralwaves" && <SpiralWaves/>};
+    {sim ===  "spiralwaves" && <SpiralWaves/>}
+    {sim ===  "growingbranch" && <GrowingBranches/>}
+    {sim ===  "noisewavy" && <NoiseWavyGrid/>}
+    {sim ===  "recursivesquares" && <RecursiveSquares/>}
+    {sim ===  "wavefrontripples" && <WavefrontRipples/>}
+
         </div>
       </div>
     </div>
