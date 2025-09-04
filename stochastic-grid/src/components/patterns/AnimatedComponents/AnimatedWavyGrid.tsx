@@ -52,10 +52,10 @@ export default function AnimatedWavyGrid() {
         <button onClick={()=>setTime(0)} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
       </div>
       <div className="flex flex-col gap-2 w-80">
-        <label>Rows: {rows}<input type="range" min={2} max={30} value={rows} onChange={e=>setRows(Number(e.target.value))} className="w-full"/></label>
-        <label>Cols: {cols}<input type="range" min={2} max={30} value={cols} onChange={e=>setCols(Number(e.target.value))} className="w-full"/></label>
-        <label>Amplitude: {amplitude}<input type="range" min={0} max={100} value={amplitude} onChange={e=>setAmplitude(Number(e.target.value))} className="w-full"/></label>
-        <label>Frequency: {frequency.toFixed(2)}<input type="range" min={0.01} max={0.2} step={0.01} value={frequency} onChange={e=>setFrequency(Number(e.target.value))} className="w-full"/></label>
+        <label>Rows: {rows}<input type="range" min={2} max={200} value={rows} onChange={e=>setRows(Number(e.target.value))} className="w-full"/></label>
+        <label>Cols: {cols}<input type="range" min={2} max={200} value={cols} onChange={e=>setCols(Number(e.target.value))} className="w-full"/></label>
+        <label>Amplitude: {amplitude}<input type="range" min={0} max={200} value={amplitude} onChange={e=>setAmplitude(Number(e.target.value))} className="w-full"/></label>
+        <label>Frequency: {frequency.toFixed(2)}<input type="range" min={0.01} max={1} step={0.01} value={frequency} onChange={e=>setFrequency(Number(e.target.value))} className="w-full"/></label>
       </div>
     </div>
   );
