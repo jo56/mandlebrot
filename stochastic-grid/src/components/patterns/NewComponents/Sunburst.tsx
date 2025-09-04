@@ -73,7 +73,7 @@ export default function Sunburst() {
           <input type="range" min={1} max={5} value={branches} onChange={e => setBranches(Number(e.target.value))} className="w-full"/>
         </label>
         <label>Base Length: {baseLength}
-          <input type="range" min={50} max={200} value={baseLength} onChange={e => setBaseLength(Number(e.target.value))} className="w-full"/>
+          <input type="range" min={1} max={200} value={baseLength} onChange={e => setBaseLength(Number(e.target.value))} className="w-full"/>
         </label>
         <label>Randomness: {randomness}
           <input type="range" min={0} max={50} value={randomness} onChange={e => setRandomness(Number(e.target.value))} className="w-full"/>
