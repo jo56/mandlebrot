@@ -38,10 +38,10 @@ export default function App() {
         <div className="w-full flex justify-center">
           {/* Existing patterns */}
           <button onClick={() => setSim("grid")} className={`px-4 py-2 rounded ${sim === "grid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Stochastic Grid</button>
-          <button onClick={() => setSim("fractal2")} className={`px-4 py-2 rounded ${sim === "fractal1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Line 1</button>
-          <button onClick={() => setSim("fractal1")} className={`px-4 py-2 rounded ${sim === "fractal2" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Line 2</button>
-          <button onClick={() => setSim("fractal3")} className={`px-4 py-2 rounded ${sim === "fractal3" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Line 3</button>
-          <button onClick={() => setSim("triangle")} className={`px-4 py-2 rounded ${sim === "triangle" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Triangle</button>
+          <button onClick={() => setSim("fractal2")} className={`px-4 py-2 rounded ${sim === "fractal1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Steps</button>
+          <button onClick={() => setSim("fractal1")} className={`px-4 py-2 rounded ${sim === "fractal2" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Line</button>
+          <button onClick={() => setSim("fractal3")} className={`px-4 py-2 rounded ${sim === "fractal3" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Triangle 1</button>
+          <button onClick={() => setSim("triangle")} className={`px-4 py-2 rounded ${sim === "triangle" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Triangle 2</button>
           <button onClick={() => setSim("zigzag")} className={`px-4 py-2 rounded ${sim === "zigzag" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Zig-Zag Line</button>
           <button onClick={() => setSim("tree")} className={`px-4 py-2 rounded ${sim === "tree" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Branching Tree</button>
 

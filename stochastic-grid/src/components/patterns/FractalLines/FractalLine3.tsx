@@ -11,6 +11,8 @@ const initialTriangle: Line[] = [
   { start: { x: 100, y: 500 }, end: { x: 300, y: 100 } },
 ];
 
+
+
 // Function to iterate lines with random splits
 function iterateLines(lines: Line[], randomness: number): Line[] {
   const newLines: Line[] = [];
@@ -34,6 +36,20 @@ export default function FractalLine3() {
   const [speed, setSpeed] = useState(500); // ms per iteration
   const [randomness, setRandomness] = useState(40); // offset size
 
+  const handleRandomize = () => {
+  const maxSteps = 5; // limit iterations to avoid freezing
+  const randomSteps = Math.floor(Math.random() * maxSteps) + 2; // 2–6 iterations
+  let newLines = [...initialTriangle];
+
+  for (let i = 0; i < randomSteps; i++) {
+    newLines = iterateLines(newLines, randomness);
+    if (newLines.length > 10000) break; // safety cap
+  }
+
+  setLines(newLines);
+  setRunning(false); // pause auto-iteration
+};
+
   // Render lines on canvas
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -52,6 +68,8 @@ export default function FractalLine3() {
       ctx.stroke();
     });
   }, [lines]);
+
+  
 
   // Automatic iteration loop
   useEffect(() => {
@@ -83,6 +101,12 @@ export default function FractalLine3() {
         >
           Reset
         </button>
+        <button
+  onClick={handleRandomize}
+  className="px-3 py-1 bg-green-500 text-white rounded"
+>
+  Randomize
+</button>
       </div>
       <div className="flex flex-col gap-2 w-80">
         <label>
