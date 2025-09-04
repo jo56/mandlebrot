@@ -18,6 +18,8 @@ import NestedPolygon from "./components/patterns/NewComponents/NestedPolygon";
 import Sunburst from "./components/patterns/NewComponents/Sunburst";
 import Spokes from "./components/patterns/NewComponents/Spokes";
 import AnimatedWavyGrid from "./components/patterns/AnimatedComponents/AnimatedWavyGrid";
+import ParticleFlow from "./components/patterns/AnimatedComponents/ParticleFlow";
+import FractalTree from "./components/patterns/AnimatedComponents/FractalTree";
 
 export default function App() {
   type Simulation =
@@ -38,7 +40,8 @@ export default function App() {
     | "sunburst"
     | "sunburst2"
     | "aniwavygrid"
-    | "f-sunburst";;
+    | "fractaltree"
+    | "particleflow";
 
   const [sim, setSim] = useState<Simulation>("grid");
 
@@ -69,6 +72,8 @@ export default function App() {
           <button onClick={() => setSim("sunburst")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Sunburst</button>
           <button onClick={() => setSim("sunburst2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Animated Spokes</button>
           <button onClick={() => setSim("aniwavygrid")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Grid</button>
+          <button onClick={() => setSim("fractaltree")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Tree</button>
+          <button onClick={() => setSim("particleflow")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Particle Flow</button>
 
         </div>
 
@@ -90,6 +95,8 @@ export default function App() {
             {sim === "sunburst" && <Sunburst/>}
             {sim === "sunburst2" && <Spokes/>}
             {sim === "aniwavygrid" && <AnimatedWavyGrid/>}
+            {sim === "fractaltree" && <FractalTree/>}
+            {sim === "particleflow" && <ParticleFlow/>}
         </div>
       </div>
     </div>
