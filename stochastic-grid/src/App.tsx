@@ -17,6 +17,7 @@ import KochSnowflake from "./components/patterns/NewComponents/KochSnowflake";
 import NestedPolygon from "./components/patterns/NewComponents/NestedPolygon";
 import Sunburst from "./components/patterns/NewComponents/Sunburst";
 import Spokes from "./components/patterns/NewComponents/Spokes";
+import AnimatedWavyGrid from "./components/patterns/AnimatedComponents/AnimatedWavyGrid";
 
 export default function App() {
   type Simulation =
@@ -35,7 +36,9 @@ export default function App() {
     | "snowflake"
     | "polygon"
     | "sunburst"
-    | "sunburst2";
+    | "sunburst2"
+    | "aniwavygrid"
+    | "f-sunburst";;
 
   const [sim, setSim] = useState<Simulation>("grid");
 
@@ -61,10 +64,11 @@ export default function App() {
           <button onClick={() => setSim("star")} className={`px-4 py-2 rounded ${sim === "star" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Recursive Star</button>
           <button onClick={() => setSim("spiral")} className={`px-4 py-2 rounded ${sim === "spiral" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Spiral Growth</button>
           <button onClick={() => setSim("snowflake")} className={`px-4 py-2 rounded ${sim === "snowflake" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Koch Snowflake</button>
-          <button onClick={() => setSim("wavygrid")} className={`px-4 py-2 rounded ${sim === "wavygrid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Grid</button>
+          <button onClick={() => setSim("wavygrid")} className={`px-4 py-2 rounded ${sim === "wavygrid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Lines</button>
           <button onClick={() => setSim("polygon")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Nested Polygon</button>
           <button onClick={() => setSim("sunburst")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Sunburst</button>
           <button onClick={() => setSim("sunburst2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Animated Spokes</button>
+          <button onClick={() => setSim("aniwavygrid")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Grid</button>
 
         </div>
 
@@ -85,6 +89,7 @@ export default function App() {
             {sim === "polygon" && <NestedPolygon/>}
             {sim === "sunburst" && <Sunburst/>}
             {sim === "sunburst2" && <Spokes/>}
+            {sim === "aniwavygrid" && <AnimatedWavyGrid/>}
         </div>
       </div>
     </div>
