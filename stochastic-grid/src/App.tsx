@@ -20,6 +20,16 @@ import Spokes from "./components/patterns/NewComponents/Spokes";
 import AnimatedWavyGrid from "./components/patterns/AnimatedComponents/AnimatedWavyGrid";
 import ParticleFlow from "./components/patterns/AnimatedComponents/ParticleFlow";
 import FractalTree from "./components/patterns/AnimatedComponents/FractalTree";
+import ExpandingRings from "./components/patterns/NewestPatterns/ExpandingRings";
+import FractalSpiral from "./components/patterns/NewestPatterns/FractalSpiral";
+import NoiseLandscape from "./components/patterns/NewestPatterns/NoiseLandscape";
+import Oscilator from "./components/patterns/NewestPatterns/Oscilator";
+import FlowField from "./components/patterns/NewestPatterns/ParticleFlow2";
+import RadialPulses from "./components/patterns/NewestPatterns/RadialWavePulses";
+import RotatingCircles from "./components/patterns/NewestPatterns/RotatingCircles";
+import RotatingSquares from "./components/patterns/NewestPatterns/RotatingSquares";
+import RotatingStarfield from "./components/patterns/NewestPatterns/RotatingStarfield";
+import SpiralWaves from "./components/patterns/NewestPatterns/SpiralWaves";
 
 export default function App() {
   type Simulation =
@@ -41,7 +51,17 @@ export default function App() {
     | "sunburst2"
     | "aniwavygrid"
     | "fractaltree"
-    | "particleflow";
+    | "particleflow"
+    | "rings"
+    | "f-spiral"
+    | "noise"
+    | "osiclator"
+    | "particleflow2"
+    | "radialwave"
+    | "rotatingcircles"
+    | "rotatingsquares"
+    | "rotatingstarfield"
+    | "spiralwaves";
 
   const [sim, setSim] = useState<Simulation>("grid");
 
@@ -76,6 +96,16 @@ export default function App() {
           <button onClick={() => setSim("fractaltree")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Tree</button>
           <button onClick={() => setSim("particleflow")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Particle Flow</button>
 
+          <button onClick={() => setSim("rings")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Expanding Rings</button>
+          <button onClick={() => setSim("f-spiral")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Fractal Spiral</button>
+          <button onClick={() => setSim("noise")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Noise Landscape</button>
+          <button onClick={() => setSim("particleflow2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Particle Flow 2</button>
+          <button onClick={() => setSim("radialwave")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Wave Pulses</button>
+          <button onClick={() => setSim("rotatingcircles")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Circles</button>
+          <button onClick={() => setSim("rotatingsquares")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Squares</button>
+          <button onClick={() => setSim("rotatingstarfield")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Rotating Starfield</button>
+          <button onClick={() => setSim("spiralwaves")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Spiral Waves</button>
+
         </div>
 
         {/* Simulation Render */}
@@ -98,6 +128,15 @@ export default function App() {
             {sim === "aniwavygrid" && <AnimatedWavyGrid/>}
             {sim === "fractaltree" && <FractalTree/>}
             {sim === "particleflow" && <ParticleFlow/>}
+            {sim === "rings" && <ExpandingRings/>}
+            {sim === "f-spiral"&& <FractalSpiral/>}
+            {sim === "noise" && <NoiseLandscape/>}
+            {sim ===  "particleflow2"  && <FlowField/>}
+    {sim ===  "radialwave"  && <RadialPulses/>}
+    {sim ===  "rotatingcircles"   && <RotatingCircles/>}
+    {sim ===  "rotatingsquares"   && <RotatingSquares/>}
+    {sim ===  "rotatingstarfield"   && <RotatingStarfield/>}
+    {sim ===  "spiralwaves" && <SpiralWaves/>};
         </div>
       </div>
     </div>
