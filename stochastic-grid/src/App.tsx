@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import StochasticGrid from "./components/patterns/Misc/Grid";
 import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
 import FractalLine2 from "./components/patterns/FractalLines/FractalLine2";
-import FractalLine3 from "./components/patterns/FractalLines/Triangle1";
+import Triangle1 from "./components/patterns/FractalLines/Triangle1";
 import FractalTriangle from "./components/patterns/FractalLines/FancyLines/Triangle2";
 import ZigZagLine from "./components/patterns/FractalLines/FancyLines/ZigZagLine";
 import BranchingTree from "./components/patterns/BranchingPatterns/BranchingTree";
@@ -57,7 +57,7 @@ export default function App() {
             {sim === "grid" && <StochasticGrid />}
             {sim === "fractal1" && <FractalLine1 />}
             {sim === "fractal2" && <FractalLine2 />}
-            {sim === "fractal3" && <FractalLine3 />}
+            {sim === "fractal3" && <Triangle1 />}
             {sim === "triangle" && <FractalTriangle />}
             {sim === "zigzag" && <ZigZagLine />}
             {sim === "tree" && <BranchingTree />}
