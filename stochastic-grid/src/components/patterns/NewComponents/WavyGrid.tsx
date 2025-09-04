@@ -1,5 +1,4 @@
-// src/components/WavyGrid.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SimulationCanvas from "../../utils/Canvas";
 
 type Point = { x: number; y: number };
@@ -17,18 +16,14 @@ export default function WavyGrid() {
       for (let j = 0; j < gridSize; j++) {
         const x = i * spacing;
         const y = j * spacing;
-        // connect right
-        if (i < gridSize - 1) {
-          newLines.push({ start: {x, y}, end: {x: x + spacing, y: y + (Math.random() - 0.5)*randomness} });
-        }
-        // connect down
-        if (j < gridSize - 1) {
-          newLines.push({ start: {x, y}, end: {x: x + (Math.random() - 0.5)*randomness, y: y + spacing} });
-        }
+        if (i < gridSize - 1) newLines.push({ start: { x, y }, end: { x: x + spacing, y: y + (Math.random() - 0.5) * randomness } });
+        if (j < gridSize - 1) newLines.push({ start: { x, y }, end: { x: x + (Math.random() - 0.5) * randomness, y: y + spacing } });
       }
     }
     setLines(newLines);
   };
+
+  const handleReset = () => setLines([]);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -36,15 +31,20 @@ export default function WavyGrid() {
         elements={lines}
         renderFn={(ctx, lines) => {
           ctx.strokeStyle = "purple";
-          lines.forEach(l => { ctx.beginPath(); ctx.moveTo(l.start.x, l.start.y); ctx.lineTo(l.end.x, l.end.y); ctx.stroke(); });
+          lines.forEach((l) => { ctx.beginPath(); ctx.moveTo(l.start.x, l.start.y); ctx.lineTo(l.end.x, l.end.y); ctx.stroke(); });
         }}
       />
       <div className="flex gap-2">
-        <button onClick={generateGrid} className="px-3 py-1 bg-green-500 text-white rounded">Randomize Grid</button>
+        <button onClick={generateGrid} className="px-3 py-1 bg-blue-500 text-white rounded">Generate Grid</button>
+        <button onClick={handleReset} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
       </div>
-      <label className="w-80">
+      <label>
         Randomness: {randomness}
-        <input type="range" min={0} max={50} value={randomness} onChange={e => setRandomness(Number(e.target.value))} className="w-full"/>
+        <input type="range" min={0} max={50} value={randomness} onChange={e => setRandomness(Number(e.target.value))} className="w-80"/>
+      </label>
+      <label>
+        Grid Size: {gridSize}
+        <input type="range" min={5} max={20} value={gridSize} onChange={e => setGridSize(Number(e.target.value))} className="w-80"/>
       </label>
     </div>
   );
