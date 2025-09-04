@@ -42,8 +42,8 @@ function iterateLines(
 }
 
 export default function BranchingTree() {
-  const canvasWidth = 1200;   // bigger width
-const canvasHeight = 800;
+const canvasWidth = 600;
+const canvasHeight = 600;
 const center: Point = { x: canvasWidth * 0.3, y: canvasHeight * 2 / 3 }; // move start left
 const initialLineLength = 100;
 
