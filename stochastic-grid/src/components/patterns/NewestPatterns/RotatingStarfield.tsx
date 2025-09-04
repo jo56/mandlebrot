@@ -39,7 +39,7 @@ export default function RotatingStarfield() {
       <div className="flex gap-2">
         <button onClick={() => setRunning(r => !r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running ? "Pause" : "Start"}</button>
       </div>
-      <label>Star Count: {count}<input type="range" min={50} max={500} value={count} onChange={e => setCount(Number(e.target.value))} className="w-80"/></label>
+      <label>Star Count: {count}<input type="range" min={50} max={30000} value={count} onChange={e => setCount(Number(e.target.value))} className="w-80"/></label>
     </div>
   );
 }
