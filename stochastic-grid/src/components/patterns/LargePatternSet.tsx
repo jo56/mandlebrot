@@ -400,25 +400,31 @@ export function RipplingGrid() {
   return (
     <div className="flex flex-col items-center gap-4">
       <SimulationCanvas width={600} height={600} elements={points as any}
-        renderFn={(ctx,pts)=>{
-          ctx.clearRect(0,0,600,600);
-          ctx.strokeStyle="black";
-          for(let i=0;i<cols-1;i++){
-            for(let j=0;j<rows-1;j++){
-              const p=pts[i*rows+j] as RipplePoint;
-              const nx=pts[(i+1)*rows+j] as RipplePoint;
-              const ny=pts[i*rows+j+1] as RipplePoint;
-              ctx.beginPath();
-              ctx.moveTo(p.x,p.y+Math.sin(p.phase)*amplitude);
-              ctx.lineTo(nx.x,nx.y+Math.sin(nx.phase)*amplitude);
-              ctx.stroke();
-              ctx.beginPath();
-              ctx.moveTo(p.x+Math.sin(p.phase)*amplitude,p.y);
-              ctx.lineTo(ny.x+Math.sin(ny.phase)*amplitude,ny.y);
-              ctx.stroke();
-            }
-          }
-        }}
+        renderFn={(ctx, pts) => {
+  ctx.clearRect(0, 0, 600, 600);
+  ctx.strokeStyle = "black";
+
+  for (let i = 0; i < cols - 1; i++) {
+    for (let j = 0; j < rows - 1; j++) {
+      const p = pts[i * rows + j] as RipplePoint;
+      const nx = pts[(i + 1) * rows + j] as RipplePoint;
+      const ny = pts[i * rows + (j + 1)] as RipplePoint;
+
+      // horizontal connection
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y + Math.sin(p.phase) * amplitude);
+      ctx.lineTo(nx.x, nx.y + Math.sin(nx.phase) * amplitude);
+      ctx.stroke();
+
+      // vertical connection
+      ctx.beginPath();
+      ctx.moveTo(p.x + Math.sin(p.phase) * amplitude, p.y);
+      ctx.lineTo(ny.x + Math.sin(ny.phase) * amplitude, ny.y);
+      ctx.stroke();
+    }
+  }
+}}
+
       />
       <div className="flex gap-2">
         <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>

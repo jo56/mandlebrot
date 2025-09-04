@@ -75,10 +75,7 @@ const SIMULATIONS = {
 
   // Spread LargePatterns dynamically
   ...Object.fromEntries(
-    Object.entries(LargePatterns).map(([key, component]) => [
-      key.toLowerCase(),
-      { component, label: key },
-    ])
+    Object.entries(LargePatterns).map(([key, component]) => [key.toLowerCase(), { component, label: key }])
   ),
 };
 
@@ -88,23 +85,17 @@ export default function App() {
   const SimComponent = SIMULATIONS[sim].component;
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-200 flex flex-col items-center p-6">
-      <div className="w-full max-w-7xl bg-white shadow-xl rounded-2xl p-8 flex flex-col gap-8">
-        <h1 className="text-4xl font-bold text-center text-gray-800">
-          Complexity Simulator
-        </h1>
+    <div className="min-h-screen w-screen bg-gray-100 grid place-items-center p-6">
+      <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-xl shadow-lg w-full overflow-x-auto">
+        <h1 className="text-3xl font-bold text-center">Complexity Simulator</h1>
 
         {/* Simulation Switcher */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="w-full flex flex-wrap justify-center gap-2">
           {Object.entries(SIMULATIONS).map(([key, { label }]) => (
             <button
               key={key}
               onClick={() => setSim(key as keyof typeof SIMULATIONS)}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
-                sim === key
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-200 hover:bg-gray-300 text-gray-700"
-              }`}
+              className={`px-4 py-2 rounded ${sim === key ? "bg-blue-500 text-white" : "bg-gray-300"}`}
             >
               {label}
             </button>
@@ -112,7 +103,7 @@ export default function App() {
         </div>
 
         {/* Simulation Render */}
-        <div className="flex justify-center items-center bg-gray-100 rounded-xl shadow-inner p-4 overflow-auto">
+        <div className="w-full flex justify-center overflow-x-auto mt-4">
           <SimComponent />
         </div>
       </div>
