@@ -16,6 +16,7 @@ import SpiralGrowth from "./components/patterns/BranchingPatterns/SpiralGrowth";
 import KochSnowflake from "./components/patterns/NewComponents/KochSnowflake";
 import NestedPolygon from "./components/patterns/NewComponents/NestedPolygon";
 import Sunburst from "./components/patterns/NewComponents/Sunburst";
+import Spokes from "./components/patterns/NewComponents/Spokes";
 
 export default function App() {
   type Simulation =
@@ -33,7 +34,8 @@ export default function App() {
     | "leaf"
     | "snowflake"
     | "polygon"
-    | "sunburst";
+    | "sunburst"
+    | "sunburst2";
 
   const [sim, setSim] = useState<Simulation>("grid");
 
@@ -62,6 +64,7 @@ export default function App() {
           <button onClick={() => setSim("wavygrid")} className={`px-4 py-2 rounded ${sim === "wavygrid" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Wavy Grid</button>
           <button onClick={() => setSim("polygon")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Nested Polygon</button>
           <button onClick={() => setSim("sunburst")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Radial Sunburst</button>
+          <button onClick={() => setSim("sunburst2")} className={`px-4 py-2 rounded ${sim === "polygon" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>Animated Spokes</button>
 
         </div>
 
@@ -81,6 +84,7 @@ export default function App() {
             {sim === "snowflake" && <KochSnowflake/>}
             {sim === "polygon" && <NestedPolygon/>}
             {sim === "sunburst" && <Sunburst/>}
+            {sim === "sunburst2" && <Spokes/>}
         </div>
       </div>
     </div>
