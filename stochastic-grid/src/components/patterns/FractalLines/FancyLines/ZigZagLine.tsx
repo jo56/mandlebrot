@@ -33,6 +33,21 @@ export default function ZigZagLine() {
     return () => clearInterval(interval);
   }, [running, speed, randomness]);
 
+  const handleRandomize = () => {
+  const maxSteps = 5;
+  const randomSteps = Math.floor(Math.random() * maxSteps) + 2;
+  let newLines = [...initialLines];
+
+  for (let i = 0; i < randomSteps; i++) {
+    newLines = iterateLines(newLines, randomness);
+    if (newLines.length > 10000) break;
+  }
+
+  setLines(newLines);
+  setRunning(false);
+};
+
+
   return (
     <div className="flex flex-col items-center gap-4">
       <SimulationCanvas
@@ -54,6 +69,12 @@ export default function ZigZagLine() {
         <button onClick={() => setLines(initialLines)} className="px-3 py-1 bg-gray-500 text-white rounded">
           Reset
         </button>
+        <button
+  onClick={handleRandomize}
+  className="px-3 py-1 bg-green-500 text-white rounded"
+>
+  Randomize
+</button>
       </div>
       <div className="flex flex-col gap-2 w-80">
         <label>
