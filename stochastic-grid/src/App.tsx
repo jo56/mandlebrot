@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import StochasticGrid from "./components/patterns/Misc/Grid";
 import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
 import FractalLine2 from "./components/patterns/FractalLines/FractalLine2";
-import FractalLine3 from "./components/patterns/FractalLines/FractalLine3";
-import FractalTriangle from "./components/patterns/FractalLines/FancyLines/FractalTriangle";
+import FractalLine3 from "./components/patterns/FractalLines/Triangle1";
+import FractalTriangle from "./components/patterns/FractalLines/FancyLines/Triangle2";
 import ZigZagLine from "./components/patterns/FractalLines/FancyLines/ZigZagLine";
 import BranchingTree from "./components/patterns/BranchingPatterns/BranchingTree";
 
