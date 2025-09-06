@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-// Original imports
+// === Simulation imports ===
 import StochasticGrid from "./components/patterns/Misc/Grid";
 import WavyGrid from "./components/patterns/NewComponents/WavyGrid";
 import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
@@ -9,11 +9,9 @@ import Triangle1 from "./components/patterns/FractalLines/Triangle1";
 import FractalTriangle from "./components/patterns/FractalLines/FancyLines/Triangle2";
 import ZigZagLine from "./components/patterns/FractalLines/FancyLines/ZigZagLine";
 import BranchingTree from "./components/patterns/BranchingPatterns/BranchingTree";
-
 import RadialFan from "./components/patterns/BranchingPatterns/RadialFan";
 import RecursiveStar from "./components/patterns/BranchingPatterns/RecursiveStar";
 import SpiralGrowth from "./components/patterns/BranchingPatterns/SpiralGrowth";
-
 import KochSnowflake from "./components/patterns/NewComponents/KochSnowflake";
 import NestedPolygon from "./components/patterns/NewComponents/NestedPolygon";
 import Sunburst from "./components/patterns/NewComponents/Sunburst";
@@ -35,10 +33,9 @@ import GrowingBranches from "./components/patterns/NewestPatterns/GrowingBranch"
 import NoiseWavyGrid from "./components/patterns/NewestPatterns/NoiseWavy";
 import RecursiveSquares from "./components/patterns/NewestPatterns/REcursiveSquares";
 import WavefrontRipples from "./components/patterns/NewestPatterns/WavefrontRipples";
-
-// Large pattern set
 import * as LargePatterns from "./components/patterns/LargePatternSet";
 
+// === Simulation registry ===
 const SIMULATIONS = {
   grid: { component: StochasticGrid, label: "Stochastic Grid" },
   wavygrid: { component: WavyGrid, label: "Wavy Grid" },
@@ -72,8 +69,6 @@ const SIMULATIONS = {
   noisewavy: { component: NoiseWavyGrid, label: "Noise Wavy Grid" },
   recursivesquares: { component: RecursiveSquares, label: "Recursive Squares" },
   wavefrontripples: { component: WavefrontRipples, label: "Wavefront Ripples" },
-
-  // Spread LargePatterns dynamically
   ...Object.fromEntries(
     Object.entries(LargePatterns).map(([key, component]) => [
       key.toLowerCase(),
@@ -83,39 +78,39 @@ const SIMULATIONS = {
 };
 
 export default function App() {
-  const [sim, setSim] = useState<keyof typeof SIMULATIONS>("grid");
-
-  const SimComponent = SIMULATIONS[sim].component;
+  const simKeys = Object.keys(SIMULATIONS);
+  const [selectedSim, setSelectedSim] = useState(simKeys[0]);
+  const simRef = useRef<any>(null);
+  const SimComponent = SIMULATIONS[selectedSim].component;
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-200 flex flex-col items-center p-6">
-      <div className="w-full max-w-7xl bg-white shadow-xl rounded-2xl p-8 flex flex-col gap-8">
-        <h1 className="text-4xl font-bold text-center text-gray-800">
-          Complexity Simulator
-        </h1>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+      {/* Header */}
+      <header className="flex justify-between items-center p-6 bg-gradient-to-r from-blue-700 to-cyan-500 shadow-lg rounded-b-2xl">
+        <h1 className="text-3xl font-bold tracking-wide">Complexity Lab</h1>
+      </header>
 
-        {/* Simulation Switcher */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {Object.entries(SIMULATIONS).map(([key, { label }]) => (
-            <button
-              key={key}
-              onClick={() => setSim(key as keyof typeof SIMULATIONS)}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
-                sim === key
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-200 hover:bg-gray-300 text-gray-700"
-              }`}
-            >
-              {label}
-            </button>
+      {/* Simulation selector */}
+      <div className="p-6 flex justify-center">
+        <select
+          value={selectedSim}
+          onChange={(e) => setSelectedSim(e.target.value)}
+          className="bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          {simKeys.map((key) => (
+            <option key={key} value={key}>
+              {SIMULATIONS[key].label}
+            </option>
           ))}
-        </div>
-
-        {/* Simulation Render */}
-        <div className="flex justify-center items-center bg-gray-100 rounded-xl shadow-inner p-4 overflow-auto">
-          <SimComponent />
-        </div>
+        </select>
       </div>
+
+      {/* Main preview */}
+      <main className="flex-1 flex justify-center items-center p-6">
+        <div className="w-full max-w-6xl h-[600px] bg-gray-800 rounded-2xl shadow-2xl flex justify-center items-center overflow-hidden">
+          <SimComponent ref={simRef} />
+        </div>
+      </main>
     </div>
   );
 }
