@@ -306,8 +306,8 @@ export function RandomWalkLines() {
         <button onClick={()=>setRunning(r=>!r)} className="px-3 py-1 bg-blue-500 text-white rounded">{running?"Pause":"Start"}</button>
         <button onClick={handleReset} className="px-3 py-1 bg-gray-500 text-white rounded">Reset</button>
       </div>
-      <label>Walker Count: {count}<input type="range" min={5} max={100} value={count} onChange={e=>setCount(Number(e.target.value))} className="w-80"/></label>
-      <label>Step Size: {step}<input type="range" min={1} max={20} value={step} onChange={e=>setStep(Number(e.target.value))} className="w-80"/></label>
+      <label>Walker Count: {count}<input type="range" min={5} max={1000} value={count} onChange={e=>setCount(Number(e.target.value))} className="w-80"/></label>
+      <label>Step Size: {step}<input type="range" min={1} max={100} value={step} onChange={e=>setStep(Number(e.target.value))} className="w-80"/></label>
     </div>
   );
 }

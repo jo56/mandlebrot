@@ -205,9 +205,6 @@ export default function App() {
       <header className="relative z-10 px-6 py-4">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-              <Zap className="w-6 h-6 text-white" />
-            </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                 Complexity Lab
@@ -215,13 +212,6 @@ export default function App() {
               <p className="text-sm text-gray-400">Interactive Pattern Generation</p>
             </div>
           </div>
-          
-          <button
-            onClick={() => setShowControls(!showControls)}
-            className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-200 border border-white/20"
-          >
-            <Settings className="w-5 h-5" />
-          </button>
         </div>
       </header>
 
