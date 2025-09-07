@@ -1,8 +1,10 @@
+/* Remove or override conflicting styles */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  background: transparent;
 }
 
 .logo {
@@ -41,10 +43,32 @@
   color: #888;
 }
 
+/* Remove this conflicting style completely */
 .app-container {
-  display: flex;
-  justify-content: center; /* horizontal */
-  align-items: center;     /* vertical */
-  min-height: 100vh;       /* full viewport height */
-  flex-direction: column;  /* stack children vertically */
+  display: block;
+}
+
+/* Add some utility classes for the dark theme */
+.bg-dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+.text-light {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.border-light {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure buttons work well in dark theme */
+button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #60a5fa;
 }
