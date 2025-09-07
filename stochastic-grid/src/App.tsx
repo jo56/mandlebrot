@@ -33,55 +33,42 @@ const SIMULATION_CATEGORIES = {
   "Fractals": {
     icon: TreePine,
     color: "from-emerald-400 via-teal-500 to-cyan-600",
-    accent: "emerald",
     sims: [
       { key: "fractal1", name: "Fractal Line", description: "Self-similar recursive patterns", complexity: "Medium" },
       { key: "fractal2", name: "Fractal Steps", description: "Stepped fractal generation", complexity: "Low" },
       { key: "triangle", name: "Fractal Triangle", description: "Triangular fractal structures", complexity: "High" },
       { key: "snowflake", name: "Koch Snowflake", description: "Classic fractal geometry", complexity: "Medium" },
-      { key: "fractaltree", name: "Fractal Tree", description: "Branching tree structures", complexity: "High" },
-      { key: "f-spiral", name: "Fractal Spiral", description: "Spiral fractal patterns", complexity: "Medium" },
-      { key: "tree", name: "Branching Tree", description: "Dynamic tree growth", complexity: "High" }
+      { key: "fractaltree", name: "Fractal Tree", description: "Branching tree structures", complexity: "High" }
     ]
   },
   "Grids & Waves": {
     icon: Grid,
     color: "from-blue-400 via-indigo-500 to-purple-600",
-    accent: "blue",
     sims: [
       { key: "grid", name: "Stochastic Grid", description: "Random grid perturbations", complexity: "Low" },
       { key: "wavygrid", name: "Wavy Grid", description: "Sinusoidal grid deformations", complexity: "Medium" },
       { key: "aniwavygrid", name: "Animated Wavy Grid", description: "Dynamic wave patterns", complexity: "High" },
-      { key: "noisewavy", name: "Noise Wavy Grid", description: "Perlin noise grid effects", complexity: "Medium" },
-      { key: "noise", name: "Noise Landscape", description: "3D noise terrain", complexity: "High" },
-      { key: "wavefrontripples", name: "Wavefront Ripples", description: "Ripple propagation", complexity: "Medium" }
+      { key: "noisewavy", name: "Noise Wavy Grid", description: "Perlin noise grid effects", complexity: "Medium" }
     ]
   },
   "Particles & Flow": {
     icon: Waves,
     color: "from-purple-400 via-pink-500 to-rose-600",
-    accent: "purple",
     sims: [
       { key: "particleflow", name: "Particle Flow", description: "Fluid particle dynamics", complexity: "High" },
       { key: "particleflow2", name: "Bouncing Particles", description: "Physics-based particles", complexity: "High" },
       { key: "rings", name: "Expanding Rings", description: "Radial wave propagation", complexity: "Medium" },
-      { key: "spiralwaves", name: "Spiral Waves", description: "Rotating wave patterns", complexity: "High" },
-      { key: "radialwave", name: "Radial Wave Pulses", description: "Pulsing wave effects", complexity: "Medium" }
+      { key: "spiralwaves", name: "Spiral Waves", description: "Rotating wave patterns", complexity: "High" }
     ]
   },
   "Geometric": {
     icon: Settings,
     color: "from-orange-400 via-red-500 to-pink-600",
-    accent: "orange",
     sims: [
       { key: "polygon", name: "Nested Polygon", description: "Recursive polygon nesting", complexity: "Medium" },
       { key: "sunburst", name: "Radial Sunburst", description: "Radial geometric patterns", complexity: "Low" },
       { key: "recursivesquares", name: "Recursive Squares", description: "Self-similar squares", complexity: "Medium" },
-      { key: "rotatingcircles", name: "Rotating Circles", description: "Orbital circle motion", complexity: "Low" },
-      { key: "rotatingsquares", name: "Rotating Squares", description: "Square rotation patterns", complexity: "Low" },
-      { key: "rotatingstarfield", name: "Rotating Starfield", description: "Star field rotation", complexity: "Medium" },
-      { key: "zigzag", name: "Zig-Zag Line", description: "Angular line patterns", complexity: "Low" },
-      { key: "radial", name: "Radial Fan", description: "Fan-shaped patterns", complexity: "Low" }
+      { key: "rotatingcircles", name: "Rotating Circles", description: "Orbital circle motion", complexity: "Low" }
     ]
   }
 };
@@ -92,7 +79,6 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [showInfo, setShowInfo] = useState(false);
   const [currentSimIndex, setCurrentSimIndex] = useState(0);
-  const simRef = useRef(null);
 
   const currentCategorySims = SIMULATION_CATEGORIES[selectedCategory]?.sims || [];
   
@@ -125,367 +111,471 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white overflow-hidden relative">
-      {/* Dynamic background mesh */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-transparent to-transparent"></div>
-        <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%)',
+      color: 'white',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      margin: 0,
+      padding: 0
+    }}>
+      {/* Inline styles to ensure it works regardless of external CSS */}
+      <style>{`
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+        .slider::-webkit-slider-thumb {
+          appearance: none; height: 20px; width: 20px; border-radius: 50%;
+          background: linear-gradient(135deg, #00bcd4, #2196f3);
+          cursor: pointer; box-shadow: 0 4px 8px rgba(0, 188, 212, 0.3);
+        }
+      `}</style>
+
+      {/* Dynamic background */}
+      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        <div style={{ position: 'absolute', top: '10%', left: '20%', width: '300px', height: '300px', 
+                     background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent)', 
+                     borderRadius: '50%', filter: 'blur(60px)', animation: 'pulse 3s infinite' }}></div>
+        <div style={{ position: 'absolute', bottom: '10%', right: '20%', width: '400px', height: '400px',
+                     background: 'radial-gradient(circle, rgba(147, 51, 234, 0.1), transparent)',
+                     borderRadius: '50%', filter: 'blur(80px)', animation: 'pulse 4s infinite' }}></div>
       </div>
 
-      {/* Premium header with glassmorphism */}
-      <header className="relative z-10 px-6 py-6 border-b border-white/10 backdrop-blur-xl bg-black/20">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/25">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
-                  Complexity Lab
-                </h1>
-                <p className="text-sm text-gray-400">Interactive Pattern Generation Suite</p>
-              </div>
+      {/* Header */}
+      <header style={{ position: 'relative', zIndex: 10, padding: '24px', 
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)', 
+                      backdropFilter: 'blur(20px)', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', 
+                     justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '48px', height: '48px', 
+                         background: 'linear-gradient(135deg, #06b6d4, #3b82f6)', 
+                         borderRadius: '12px', display: 'flex', alignItems: 'center', 
+                         justifyContent: 'center', boxShadow: '0 8px 24px rgba(6, 182, 212, 0.25)' }}>
+              <Zap style={{ width: '24px', height: '24px', color: 'white' }} />
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <h1 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0,
+                          background: 'linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6)',
+                          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                Complexity Lab
+              </h1>
+              <p style={{ fontSize: '14px', color: '#9ca3af', margin: '4px 0 0 0' }}>
+                Interactive Pattern Generation Suite
+              </p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-3">
-            <button className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg border border-white/20 transition-all duration-200 flex items-center space-x-2">
-              <Share2 className="w-4 h-4" />
-              <span className="text-sm font-medium">Share</span>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button style={{ padding: '8px 16px', background: 'rgba(255, 255, 255, 0.1)', 
+                            border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px',
+                            color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', 
+                            gap: '8px', transition: 'all 0.2s' }}>
+              <Share2 style={{ width: '16px', height: '16px' }} />
+              <span style={{ fontSize: '14px', fontWeight: '500' }}>Share</span>
             </button>
-            <button className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg shadow-lg shadow-cyan-500/25 transition-all duration-200 flex items-center space-x-2">
-              <Download className="w-4 h-4" />
-              <span className="text-sm font-medium">Export</span>
+            <button style={{ padding: '8px 16px', 
+                            background: 'linear-gradient(135deg, #06b6d4, #3b82f6)', 
+                            border: 'none', borderRadius: '8px', color: 'white', cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s',
+                            boxShadow: '0 4px 12px rgba(6, 182, 212, 0.25)' }}>
+              <Download style={{ width: '16px', height: '16px' }} />
+              <span style={{ fontSize: '14px', fontWeight: '500' }}>Export</span>
             </button>
           </div>
         </div>
       </header>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-6">
-        <div className="grid lg:grid-cols-4 gap-6 h-[calc(100vh-180px)]">
-          {/* Enhanced Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Category Selection with enhanced cards */}
-            <div className="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-2xl rounded-3xl p-6 border border-white/20 shadow-2xl">
-              <h3 className="text-lg font-semibold mb-6 text-gray-200">Pattern Categories</h3>
-              <div className="space-y-3">
-                {Object.entries(SIMULATION_CATEGORIES).map(([category, config]) => {
-                  const Icon = config.icon;
-                  const isActive = selectedCategory === category;
-                  
-                  return (
-                    <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`w-full group relative overflow-hidden ${
-                        isActive
-                          ? 'bg-gradient-to-r ' + config.color + ' text-white shadow-xl'
-                          : 'bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10'
-                      } rounded-xl p-4 transition-all duration-300 transform hover:scale-[1.02]`}
-                    >
-                      <div className="relative z-10 flex items-center space-x-3">
-                        <div className={`p-2 rounded-lg ${isActive ? 'bg-white/20' : 'bg-white/10'}`}>
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <div className="text-left">
-                          <div className="font-semibold text-sm">{category}</div>
-                          <div className="text-xs opacity-80">{config.sims.length} patterns</div>
-                        </div>
-                      </div>
-                      {isActive && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-50"></div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Enhanced Pattern List */}
-            <div className="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-2xl rounded-3xl p-6 border border-white/20 shadow-2xl flex-1">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-200">
-                  {selectedCategory}
-                </h3>
-                <span className="text-xs bg-white/10 px-3 py-1 rounded-full text-gray-300">
-                  {currentCategorySims.length} available
-                </span>
-              </div>
-              
-              <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-white/5">
-                {currentCategorySims.map((sim, index) => (
+      {/* Main Content */}
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: '1200px', margin: '0 auto', 
+                   padding: '24px', display: 'grid', gridTemplateColumns: '300px 1fr', 
+                   gap: '24px', minHeight: 'calc(100vh - 120px)' }}>
+        
+        {/* Sidebar */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Categories */}
+          <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)',
+                       borderRadius: '24px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.2)',
+                       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '24px', 
+                        textAlign: 'center', color: '#e5e7eb' }}>Categories</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {Object.entries(SIMULATION_CATEGORIES).map(([category, config]) => {
+                const Icon = config.icon;
+                const isActive = selectedCategory === category;
+                
+                return (
                   <button
-                    key={sim.key}
-                    onClick={() => {
-                      setSelectedSim(sim);
-                      setCurrentSimIndex(index);
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '12px',
+                      padding: '16px',
+                      borderRadius: '12px',
+                      border: isActive ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: isActive 
+                        ? `linear-gradient(135deg, ${config.color.replace('from-', '').replace('via-', '').replace('to-', '').split(' ').map(c => {
+                            const colorMap = {
+                              'emerald-400': '#34d399', 'teal-500': '#14b8a6', 'cyan-600': '#0891b2',
+                              'blue-400': '#60a5fa', 'indigo-500': '#6366f1', 'purple-600': '#9333ea',
+                              'purple-400': '#a78bfa', 'pink-500': '#ec4899', 'rose-600': '#e11d48',
+                              'orange-400': '#fb923c', 'red-500': '#ef4444', 'pink-600': '#db2777'
+                            };
+                            return colorMap[c] || '#6366f1';
+                          }).join(', ')})` 
+                        : 'rgba(255, 255, 255, 0.05)',
+                      color: 'white',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      transform: 'scale(1)',
+                      boxShadow: isActive ? '0 8px 20px rgba(0, 0, 0, 0.3)' : 'none'
                     }}
-                    className={`w-full text-left group relative overflow-hidden ${
-                      selectedSim?.key === sim.key
-                        ? 'bg-gradient-to-r from-white/20 to-white/10 border-white/30 shadow-lg'
-                        : 'bg-white/5 hover:bg-white/10 border-white/10'
-                    } border rounded-xl p-4 transition-all duration-200 hover:scale-[1.01]`}
+                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.02)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="font-medium text-sm text-white">{sim.name}</div>
-                      <span className={`text-xs px-2 py-1 rounded-full ${getComplexityColor(sim.complexity)}`}>
-                        {sim.complexity}
+                    <div style={{ padding: '8px', borderRadius: '8px', 
+                                 background: isActive ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)' }}>
+                      <Icon style={{ width: '20px', height: '20px' }} />
+                    </div>
+                    <div style={{ textAlign: 'center', flex: 1 }}>
+                      <div style={{ fontSize: '14px', fontWeight: '600' }}>{category}</div>
+                      <div style={{ fontSize: '12px', opacity: 0.8 }}>{config.sims.length} patterns</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Pattern List */}
+          <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)',
+                       borderRadius: '24px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.2)',
+                       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)', flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                         marginBottom: '24px', gap: '12px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '600', textAlign: 'center', margin: 0 }}>
+                {selectedCategory}
+              </h3>
+              <span style={{ fontSize: '12px', background: 'rgba(255, 255, 255, 0.1)', 
+                            padding: '4px 12px', borderRadius: '20px', color: '#d1d5db' }}>
+                {currentCategorySims.length} patterns
+              </span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', 
+                         maxHeight: '400px', overflowY: 'auto' }} className="scrollbar-thin">
+              {currentCategorySims.map((sim, index) => (
+                <button
+                  key={sim.key}
+                  onClick={() => {
+                    setSelectedSim(sim);
+                    setCurrentSimIndex(index);
+                  }}
+                  style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    background: selectedSim?.key === sim.key 
+                      ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))' 
+                      : 'rgba(255, 255, 255, 0.05)',
+                    border: selectedSim?.key === sim.key 
+                      ? '1px solid rgba(255, 255, 255, 0.3)' 
+                      : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    padding: '16px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    position: 'relative'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                               marginBottom: '8px' }}>
+                    <div style={{ fontSize: '14px', fontWeight: '500', color: 'white', flex: 1, textAlign: 'center' }}>
+                      {sim.name}
+                    </div>
+                    <span style={{ 
+                      fontSize: '10px', 
+                      padding: '2px 8px', 
+                      borderRadius: '20px',
+                      ...getComplexityColor(sim.complexity).split(' ').reduce((acc, className) => {
+                        if (className.includes('text-')) {
+                          const color = className.replace('text-', '');
+                          const colorMap = {
+                            'green-400': '#4ade80',
+                            'yellow-400': '#facc15',
+                            'red-400': '#f87171'
+                          };
+                          acc.color = colorMap[color] || '#9ca3af';
+                        }
+                        if (className.includes('bg-')) {
+                          const bgColor = className.replace('bg-', '').replace('/20', '');
+                          const bgColorMap = {
+                            'green-400': 'rgba(74, 222, 128, 0.2)',
+                            'yellow-400': 'rgba(250, 204, 21, 0.2)',
+                            'red-400': 'rgba(248, 113, 113, 0.2)'
+                          };
+                          acc.backgroundColor = bgColorMap[bgColor] || 'rgba(156, 163, 175, 0.2)';
+                        }
+                        return acc;
+                      }, {})
+                    }}>
+                      {sim.complexity}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#9ca3af', textAlign: 'center' }}>
+                    {sim.description}
+                  </div>
+                  {selectedSim?.key === sim.key && (
+                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px',
+                                 background: 'linear-gradient(to bottom, #06b6d4, #3b82f6)', borderRadius: '0 4px 4px 0' }} />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Info Header */}
+          <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)',
+                       borderRadius: '24px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.2)',
+                       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ width: '64px', height: '64px', 
+                             background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+                             borderRadius: '16px', display: 'flex', alignItems: 'center', 
+                             justifyContent: 'center', boxShadow: '0 8px 24px rgba(6, 182, 212, 0.25)' }}>
+                  <TreePine style={{ width: '32px', height: '32px', color: 'white' }} />
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white', margin: '0 0 4px 0' }}>
+                    {selectedSim?.name || "Select a Pattern"}
+                  </h2>
+                  <p style={{ fontSize: '14px', color: '#d1d5db', margin: '0 0 8px 0' }}>
+                    {selectedSim?.description || "Choose a simulation from the sidebar"}
+                  </p>
+                  {selectedSim && (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+                      <span style={{ 
+                        fontSize: '12px', 
+                        padding: '4px 12px', 
+                        borderRadius: '20px',
+                        ...getComplexityColor(selectedSim.complexity).split(' ').reduce((acc, className) => {
+                          if (className.includes('text-')) {
+                            const color = className.replace('text-', '');
+                            const colorMap = { 'green-400': '#4ade80', 'yellow-400': '#facc15', 'red-400': '#f87171' };
+                            acc.color = colorMap[color] || '#9ca3af';
+                          }
+                          if (className.includes('bg-')) {
+                            const bgColor = className.replace('bg-', '').replace('/20', '');
+                            const bgColorMap = { 'green-400': 'rgba(74, 222, 128, 0.2)', 'yellow-400': 'rgba(250, 204, 21, 0.2)', 'red-400': 'rgba(248, 113, 113, 0.2)' };
+                            acc.backgroundColor = bgColorMap[bgColor] || 'rgba(156, 163, 175, 0.2)';
+                          }
+                          return acc;
+                        }, {})
+                      }}>
+                        {selectedSim.complexity} Complexity
+                      </span>
+                      <span style={{ fontSize: '12px', color: '#9ca3af' }}>
+                        {currentSimIndex + 1} of {currentCategorySims.length}
                       </span>
                     </div>
-                    <div className="text-xs text-gray-400 leading-relaxed">{sim.description}</div>
-                    
-                    {selectedSim?.key === sim.key && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-r"></div>
-                    )}
-                  </button>
-                ))}
+                  )}
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button onClick={() => setShowInfo(!showInfo)}
+                        style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '12px',
+                                color: 'white', cursor: 'pointer' }}>
+                  <Info style={{ width: '20px', height: '20px' }} />
+                </button>
+                <button onClick={prevSim} disabled={currentCategorySims.length === 0}
+                        style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '12px',
+                                color: 'white', cursor: 'pointer', opacity: currentCategorySims.length === 0 ? 0.5 : 1 }}>
+                  <ChevronLeft style={{ width: '20px', height: '20px' }} />
+                </button>
+                <button onClick={nextSim} disabled={currentCategorySims.length === 0}
+                        style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '12px',
+                                color: 'white', cursor: 'pointer', opacity: currentCategorySims.length === 0 ? 0.5 : 1 }}>
+                  <ChevronRight style={{ width: '20px', height: '20px' }} />
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Enhanced Main Content */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Premium Info Header */}
-            <div className="bg-gradient-to-r from-white/10 via-white/5 to-white/10 backdrop-blur-2xl rounded-3xl p-6 border border-white/20 shadow-2xl">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/25">
-                    <TreePine className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-white mb-1">{selectedSim?.name || "Select a Pattern"}</h2>
-                    <p className="text-gray-300 text-sm mb-2">{selectedSim?.description || "Choose a simulation from the sidebar"}</p>
-                    {selectedSim && (
-                      <div className="flex items-center space-x-4">
-                        <span className={`text-xs px-3 py-1 rounded-full ${getComplexityColor(selectedSim.complexity)}`}>
-                          {selectedSim.complexity} Complexity
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {currentSimIndex + 1} of {currentCategorySims.length}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setShowInfo(!showInfo)}
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/20 transition-all duration-200"
-                  >
-                    <Info className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={prevSim}
-                    disabled={currentCategorySims.length === 0}
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={nextSim}
-                    disabled={currentCategorySims.length === 0}
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Premium Simulation Display */}
-            <div className="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-2xl rounded-3xl p-6 border border-white/20 shadow-2xl flex-1 relative overflow-hidden">
-              <div className="h-full min-h-[500px] rounded-2xl overflow-hidden relative">
-                {selectedSim?.key ? (
-                  <MockSimulation name={selectedSim.name} />
-                ) : (
-                  <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-slate-900 to-black rounded-2xl">
-                    <div className="text-center">
-                      <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center animate-pulse shadow-lg shadow-cyan-500/25">
-                        <Zap className="w-12 h-12 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-3">Select a Pattern</h3>
-                      <p className="text-gray-400 text-sm max-w-md mx-auto leading-relaxed">
-                        Choose from our collection of interactive complexity patterns and watch mathematical beauty unfold in real-time.
-                      </p>
+          {/* Simulation Display */}
+          <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)',
+                       borderRadius: '24px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.2)',
+                       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)', flex: 1, position: 'relative' }}>
+            <div style={{ height: '500px', borderRadius: '16px', position: 'relative', overflow: 'hidden' }}>
+              {selectedSim?.key ? (
+                <MockSimulation name={selectedSim.name} />
+              ) : (
+                <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                             background: 'linear-gradient(135deg, #1f2937, #374151, #1f2937)', borderRadius: '16px' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ width: '96px', height: '96px', margin: '0 auto 24px auto',
+                                 background: 'linear-gradient(135deg, #06b6d4, #3b82f6)', borderRadius: '50%',
+                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                 animation: 'pulse 2s infinite', boxShadow: '0 8px 24px rgba(6, 182, 212, 0.25)' }}>
+                      <Zap style={{ width: '48px', height: '48px', color: 'white' }} />
                     </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Premium Floating Controls */}
-              {selectedSim?.key && (
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-                  <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-xl rounded-2xl px-6 py-4 border border-white/20 shadow-2xl">
-                    <button
-                      onClick={() => setIsPlaying(!isPlaying)}
-                      className="p-3 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl hover:scale-110 transition-all duration-200 shadow-lg shadow-cyan-500/25"
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-5 h-5 text-white" />
-                      ) : (
-                        <Play className="w-5 h-5 text-white ml-0.5" />
-                      )}
-                    </button>
-                    
-                    <button className="p-3 bg-white/20 hover:bg-white/30 rounded-xl transition-all duration-200">
-                      <RotateCcw className="w-5 h-5 text-white" />
-                    </button>
-                    
-                    <button className="p-3 bg-white/20 hover:bg-white/30 rounded-xl transition-all duration-200">
-                      <Maximize2 className="w-5 h-5 text-white" />
-                    </button>
-                    
-                    <div className="h-8 w-px bg-white/30" />
-                    
-                    <div className="flex flex-col items-center">
-                      <span className="text-xs text-gray-300 font-medium">
-                        Pattern {currentSimIndex + 1}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        of {currentCategorySims.length}
-                      </span>
-                    </div>
+                    <h3 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white', margin: '0 0 12px 0' }}>
+                      Select a Pattern
+                    </h3>
+                    <p style={{ fontSize: '14px', color: '#9ca3af', maxWidth: '400px', margin: '0 auto', lineHeight: 1.5 }}>
+                      Choose from our collection of interactive complexity patterns and watch mathematical beauty unfold in real-time.
+                    </p>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Info Panel */}
-            {showInfo && selectedSim?.key && (
-              <div className="bg-gradient-to-r from-white/10 via-white/5 to-white/10 backdrop-blur-2xl rounded-3xl p-6 border border-white/20 shadow-2xl">
-                <h3 className="text-lg font-semibold text-white mb-4">Pattern Information</h3>
+            {/* Floating Controls */}
+            {selectedSim?.key && (
+              <div style={{ position: 'absolute', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
+                           display: 'flex', alignItems: 'center', gap: '12px',
+                           background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(20px)',
+                           borderRadius: '16px', padding: '16px 24px', border: '1px solid rgba(255, 255, 255, 0.2)',
+                           boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)' }}>
+                <button onClick={() => setIsPlaying(!isPlaying)}
+                        style={{ padding: '12px', background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+                                borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                boxShadow: '0 4px 12px rgba(6, 182, 212, 0.25)', transition: 'transform 0.2s' }}
+                        onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+                        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
+                  {isPlaying ? <Pause style={{ width: '20px', height: '20px' }} /> : 
+                              <Play style={{ width: '20px', height: '20px', marginLeft: '2px' }} />}
+                </button>
                 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
+                <button style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.2)',
+                                borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                        onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
+                        onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}>
+                  <RotateCcw style={{ width: '20px', height: '20px' }} />
+                </button>
+                
+                <button style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.2)',
+                                borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                        onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
+                        onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}>
+                  <Maximize2 style={{ width: '20px', height: '20px' }} />
+                </button>
+                
+                <div style={{ height: '32px', width: '1px', background: 'rgba(255, 255, 255, 0.3)' }} />
+                
+                <div style={{ textAlign: 'center' }}>
+                  <span style={{ fontSize: '12px', color: '#d1d5db', fontWeight: '500', display: 'block' }}>
+                    Pattern {currentSimIndex + 1}
+                  </span>
+                  <span style={{ fontSize: '10px', color: '#9ca3af', display: 'block' }}>
+                    of {currentCategorySims.length}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Info Panel */}
+          {showInfo && selectedSim?.key && (
+            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)',
+                         borderRadius: '24px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.2)',
+                         boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '24px', textAlign: 'center' }}>
+                Pattern Information
+              </h3>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db', 
+                                   marginBottom: '12px', textAlign: 'center' }}>
+                      Animation Speed
+                    </label>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-3">
-                        Animation Speed
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          defaultValue="75"
-                          className="w-full h-3 bg-white/10 rounded-full appearance-none cursor-pointer slider"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>Slow</span>
-                          <span>Fast</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-3">
-                        Pattern Complexity
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          defaultValue="60"
-                          className="w-full h-3 bg-white/10 rounded-full appearance-none cursor-pointer slider"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>Simple</span>
-                          <span>Complex</span>
-                        </div>
+                      <input type="range" min="0" max="100" defaultValue="75" className="slider"
+                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', 
+                                   color: '#9ca3af', marginTop: '4px' }}>
+                        <span>Slow</span>
+                        <span>Fast</span>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db',
+                                   marginBottom: '12px', textAlign: 'center' }}>
+                      Pattern Complexity
+                    </label>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-3">
-                        Scale Factor
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="range"
-                          min="50"
-                          max="200"
-                          defaultValue="100"
-                          className="w-full h-3 bg-white/10 rounded-full appearance-none cursor-pointer slider"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>50%</span>
-                          <span>200%</span>
-                        </div>
+                      <input type="range" min="0" max="100" defaultValue="60" className="slider"
+                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px',
+                                   color: '#9ca3af', marginTop: '4px' }}>
+                        <span>Simple</span>
+                        <span>Complex</span>
                       </div>
                     </div>
-                    
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db',
+                                   marginBottom: '12px', textAlign: 'center' }}>
+                      Scale Factor
+                    </label>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-3">
-                        Iteration Depth
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="range"
-                          min="1"
-                          max="10"
-                          defaultValue="5"
-                          className="w-full h-3 bg-white/10 rounded-full appearance-none cursor-pointer slider"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>1</span>
-                          <span>10</span>
-                        </div>
+                      <input type="range" min="50" max="200" defaultValue="100" className="slider"
+                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px',
+                                   color: '#9ca3af', marginTop: '4px' }}>
+                        <span>50%</span>
+                        <span>200%</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db',
+                                   marginBottom: '12px', textAlign: 'center' }}>
+                      Iteration Depth
+                    </label>
+                    <div>
+                      <input type="range" min="1" max="10" defaultValue="5" className="slider"
+                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
+                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px',
+                                   color: '#9ca3af', marginTop: '4px' }}>
+                        <span>1</span>
+                        <span>10</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
-
-      <style jsx>{`
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          height: 24px;
-          width: 24px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #00bcd4, #2196f3);
-          cursor: pointer;
-          box-shadow: 0 6px 12px rgba(0, 188, 212, 0.3);
-          border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .slider::-moz-range-thumb {
-          height: 24px;
-          width: 24px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #00bcd4, #2196f3);
-          cursor: pointer;
-          border: 2px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 0 6px 12px rgba(0, 188, 212, 0.3);
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 6px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
-          border-radius: 3px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.2);
-          border-radius: 3px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-      `}</style>
     </div>
   );
 }

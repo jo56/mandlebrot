@@ -34,9 +34,14 @@ html, body, #root {
 }
 
 #root {
-  max-width: none;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   padding: 0;
-  text-align: left;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 a {

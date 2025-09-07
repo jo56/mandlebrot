@@ -1,6 +1,7 @@
 /* Remove or override conflicting styles */
 #root {
-  max-width: none;
+  width: 100%;
+  max-width: 100vw;
   margin: 0;
   padding: 0;
   text-align: left;
