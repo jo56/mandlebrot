@@ -1,32 +1,82 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Pause, RotateCcw, Settings, ChevronLeft, ChevronRight, Grid, Zap, TreePine, Waves, Maximize2, Download, Share2, Info } from "lucide-react";
+import { RotateCcw, ChevronLeft, ChevronRight, Grid, Zap, TreePine, Waves, Download, Share2, Info } from "lucide-react";
 
-// Mock simulation components for demonstration
-const MockSimulation = ({ name }) => (
-  <div className="w-full h-full flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-black rounded-xl">
-    <div className="absolute inset-0 opacity-20">
-      {Array.from({ length: 100 }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 2}s`,
-            animationDuration: `${0.5 + Math.random() * 2}s`
-          }}
-        />
-      ))}
-    </div>
-    <div className="text-center z-10">
-      <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center animate-pulse">
-        <Zap className="w-10 h-10 text-white" />
-      </div>
-      <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
-      <p className="text-cyan-300 text-sm animate-pulse">Simulation Running...</p>
-    </div>
-  </div>
-);
+// === Simulation imports ===
+import StochasticGrid from "./components/patterns/Misc/Grid";
+import WavyGrid from "./components/patterns/NewComponents/WavyGrid";
+import FractalLine1 from "./components/patterns/FractalLines/FractalLine1";
+import FractalLine2 from "./components/patterns/FractalLines/FractalLine2";
+import Triangle1 from "./components/patterns/FractalLines/Triangle1";
+import FractalTriangle from "./components/patterns/FractalLines/FancyLines/Triangle2";
+import ZigZagLine from "./components/patterns/FractalLines/FancyLines/ZigZagLine";
+import BranchingTree from "./components/patterns/BranchingPatterns/BranchingTree";
+import RadialFan from "./components/patterns/BranchingPatterns/RadialFan";
+import RecursiveStar from "./components/patterns/BranchingPatterns/RecursiveStar";
+import SpiralGrowth from "./components/patterns/BranchingPatterns/SpiralGrowth";
+import KochSnowflake from "./components/patterns/NewComponents/KochSnowflake";
+import NestedPolygon from "./components/patterns/NewComponents/NestedPolygon";
+import Sunburst from "./components/patterns/NewComponents/Sunburst";
+import Spokes from "./components/patterns/NewComponents/Spokes";
+import AnimatedWavyGrid from "./components/patterns/AnimatedComponents/AnimatedWavyGrid";
+import ParticleFlow from "./components/patterns/AnimatedComponents/ParticleFlow";
+import FractalTree from "./components/patterns/AnimatedComponents/FractalTree";
+import ExpandingRings from "./components/patterns/NewestPatterns/ExpandingRings";
+import FractalSpiral from "./components/patterns/NewestPatterns/FractalSpiral";
+import NoiseLandscape from "./components/patterns/NewestPatterns/NoiseLandscape";
+import Oscilator from "./components/patterns/NewestPatterns/Oscilator";
+import FlowField from "./components/patterns/NewestPatterns/ParticleFlow2";
+import RadialPulses from "./components/patterns/NewestPatterns/RadialWavePulses";
+import RotatingCircles from "./components/patterns/NewestPatterns/RotatingCircles";
+import RotatingSquares from "./components/patterns/NewestPatterns/RotatingSquares";
+import RotatingStarfield from "./components/patterns/NewestPatterns/RotatingStarfield";
+import SpiralWaves from "./components/patterns/NewestPatterns/SpiralWaves";
+import GrowingBranches from "./components/patterns/NewestPatterns/GrowingBranch";
+import NoiseWavyGrid from "./components/patterns/NewestPatterns/NoiseWavy";
+import RecursiveSquares from "./components/patterns/NewestPatterns/REcursiveSquares";
+import WavefrontRipples from "./components/patterns/NewestPatterns/WavefrontRipples";
+import * as LargePatterns from "./components/patterns/LargePatternSet";
+
+// === Simulation registry ===
+const SIMULATIONS = {
+  grid: { component: StochasticGrid, label: "Stochastic Grid" },
+  wavygrid: { component: WavyGrid, label: "Wavy Grid" },
+  fractal1: { component: FractalLine1, label: "Fractal Line" },
+  fractal2: { component: FractalLine2, label: "Fractal Steps" },
+  fractal3: { component: Triangle1, label: "Fractal Triangle 1" },
+  triangle: { component: FractalTriangle, label: "Fractal Triangle 2" },
+  zigzag: { component: ZigZagLine, label: "Zig-Zag Line" },
+  tree: { component: BranchingTree, label: "Branching Tree" },
+  radial: { component: RadialFan, label: "Radial Fan" },
+  star: { component: RecursiveStar, label: "Recursive Star" },
+  spiral: { component: SpiralGrowth, label: "Spiral Growth" },
+  snowflake: { component: KochSnowflake, label: "Koch Snowflake" },
+  polygon: { component: NestedPolygon, label: "Nested Polygon" },
+  sunburst: { component: Sunburst, label: "Radial Sunburst" },
+  sunburst2: { component: Spokes, label: "Animated Spokes" },
+  aniwavygrid: { component: AnimatedWavyGrid, label: "Animated Wavy Grid" },
+  fractaltree: { component: FractalTree, label: "Fractal Tree" },
+  particleflow: { component: ParticleFlow, label: "Particle Flow" },
+  rings: { component: ExpandingRings, label: "Expanding Rings" },
+  "f-spiral": { component: FractalSpiral, label: "Fractal Spiral" },
+  noise: { component: NoiseLandscape, label: "Noise Landscape" },
+  oscilator: { component: Oscilator, label: "Oscillator" },
+  particleflow2: { component: FlowField, label: "Bouncing Particles" },
+  radialwave: { component: RadialPulses, label: "Radial Wave Pulses" },
+  rotatingcircles: { component: RotatingCircles, label: "Rotating Circles" },
+  rotatingsquares: { component: RotatingSquares, label: "Rotating Squares" },
+  rotatingstarfield: { component: RotatingStarfield, label: "Rotating Starfield" },
+  spiralwaves: { component: SpiralWaves, label: "Spiral Waves" },
+  growingbranch: { component: GrowingBranches, label: "Growing Branch" },
+  noisewavy: { component: NoiseWavyGrid, label: "Noise Wavy Grid" },
+  recursivesquares: { component: RecursiveSquares, label: "Recursive Squares" },
+  wavefrontripples: { component: WavefrontRipples, label: "Wavefront Ripples" },
+  ...Object.fromEntries(
+    Object.entries(LargePatterns).map(([key, component]) => [
+      key.toLowerCase(),
+      { component, label: key },
+    ])
+  ),
+};
 
 // Organized simulation categories
 const SIMULATION_CATEGORIES = {
@@ -38,7 +88,9 @@ const SIMULATION_CATEGORIES = {
       { key: "fractal2", name: "Fractal Steps", description: "Stepped fractal generation", complexity: "Low" },
       { key: "triangle", name: "Fractal Triangle", description: "Triangular fractal structures", complexity: "High" },
       { key: "snowflake", name: "Koch Snowflake", description: "Classic fractal geometry", complexity: "Medium" },
-      { key: "fractaltree", name: "Fractal Tree", description: "Branching tree structures", complexity: "High" }
+      { key: "fractaltree", name: "Fractal Tree", description: "Branching tree structures", complexity: "High" },
+      { key: "f-spiral", name: "Fractal Spiral", description: "Spiral fractal patterns", complexity: "Medium" },
+      { key: "tree", name: "Branching Tree", description: "Dynamic tree growth", complexity: "High" }
     ]
   },
   "Grids & Waves": {
@@ -48,7 +100,9 @@ const SIMULATION_CATEGORIES = {
       { key: "grid", name: "Stochastic Grid", description: "Random grid perturbations", complexity: "Low" },
       { key: "wavygrid", name: "Wavy Grid", description: "Sinusoidal grid deformations", complexity: "Medium" },
       { key: "aniwavygrid", name: "Animated Wavy Grid", description: "Dynamic wave patterns", complexity: "High" },
-      { key: "noisewavy", name: "Noise Wavy Grid", description: "Perlin noise grid effects", complexity: "Medium" }
+      { key: "noisewavy", name: "Noise Wavy Grid", description: "Perlin noise grid effects", complexity: "Medium" },
+      { key: "noise", name: "Noise Landscape", description: "3D noise terrain", complexity: "High" },
+      { key: "wavefrontripples", name: "Wavefront Ripples", description: "Ripple propagation", complexity: "Medium" }
     ]
   },
   "Particles & Flow": {
@@ -62,23 +116,51 @@ const SIMULATION_CATEGORIES = {
     ]
   },
   "Geometric": {
-    icon: Settings,
+    icon: Grid,
     color: "from-orange-400 via-red-500 to-pink-600",
     sims: [
       { key: "polygon", name: "Nested Polygon", description: "Recursive polygon nesting", complexity: "Medium" },
       { key: "sunburst", name: "Radial Sunburst", description: "Radial geometric patterns", complexity: "Low" },
       { key: "recursivesquares", name: "Recursive Squares", description: "Self-similar squares", complexity: "Medium" },
-      { key: "rotatingcircles", name: "Rotating Circles", description: "Orbital circle motion", complexity: "Low" }
+      { key: "rotatingcircles", name: "Rotating Circles", description: "Orbital circle motion", complexity: "Low" },
+      { key: "rotatingsquares", name: "Rotating Squares", description: "Square rotation patterns", complexity: "Low" },
+      { key: "rotatingstarfield", name: "Rotating Starfield", description: "Star field rotation", complexity: "Medium" },
+      { key: "zigzag", name: "Zig-Zag Line", description: "Angular line patterns", complexity: "Low" },
+      { key: "radial", name: "Radial Fan", description: "Fan-shaped patterns", complexity: "Low" },
+      { key: "star", name: "Recursive Star", description: "Star-based recursion", complexity: "Medium" },
+      { key: "sunburst2", name: "Animated Spokes", description: "Rotating spoke patterns", complexity: "Low" }
     ]
+  },
+  "Complex Systems": {
+    icon: Zap,
+    color: "from-cyan-500 to-blue-600",
+    sims: [
+      { key: "growingbranch", name: "Growing Branch", description: "Organic growth patterns", complexity: "High" },
+      { key: "spiral", name: "Spiral Growth", description: "Spiral development", complexity: "Medium" },
+      { key: "oscilator", name: "Oscillator", description: "Harmonic oscillations", complexity: "Medium" },
+      { key: "radialwave", name: "Radial Wave Pulses", description: "Pulsing wave effects", complexity: "Medium" }
+    ]
+  },
+  "Advanced Patterns": {
+    icon: Grid,
+    color: "from-indigo-500 to-purple-600",
+    sims: Object.keys(LargePatterns).map(key => ({
+      key: key.toLowerCase(),
+      name: key.replace(/([A-Z])/g, ' $1').trim(),
+      description: `Advanced ${key.toLowerCase().replace(/([A-Z])/g, ' $1').trim()} pattern`,
+      complexity: "High"
+    }))
   }
 };
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("Fractals");
   const [selectedSim, setSelectedSim] = useState(SIMULATION_CATEGORIES.Fractals.sims[0]);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [showInfo, setShowInfo] = useState(false);
   const [currentSimIndex, setCurrentSimIndex] = useState(0);
+  const simRef = useRef(null);
+
+  // Removed universal simulation parameters - each component manages its own
 
   const currentCategorySims = SIMULATION_CATEGORIES[selectedCategory]?.sims || [];
   
@@ -109,6 +191,11 @@ export default function App() {
       default: return "text-gray-400 bg-gray-400/20";
     }
   };
+
+  // Get the actual simulation component
+  const SimComponent = selectedSim?.key && SIMULATIONS[selectedSim.key] 
+    ? SIMULATIONS[selectedSim.key].component 
+    : () => <div className="flex items-center justify-center h-full text-gray-400">No simulation found</div>;
 
   return (
     <div style={{
@@ -225,7 +312,8 @@ export default function App() {
                               'emerald-400': '#34d399', 'teal-500': '#14b8a6', 'cyan-600': '#0891b2',
                               'blue-400': '#60a5fa', 'indigo-500': '#6366f1', 'purple-600': '#9333ea',
                               'purple-400': '#a78bfa', 'pink-500': '#ec4899', 'rose-600': '#e11d48',
-                              'orange-400': '#fb923c', 'red-500': '#ef4444', 'pink-600': '#db2777'
+                              'orange-400': '#fb923c', 'red-500': '#ef4444', 'pink-600': '#db2777',
+                              'cyan-500': '#06b6d4'
                             };
                             return colorMap[c] || '#6366f1';
                           }).join(', ')})` 
@@ -420,7 +508,9 @@ export default function App() {
                        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)', flex: 1, position: 'relative' }}>
             <div style={{ height: '500px', borderRadius: '16px', position: 'relative', overflow: 'hidden' }}>
               {selectedSim?.key ? (
-                <MockSimulation name={selectedSim.name} />
+                <SimComponent 
+                  ref={simRef}
+                />
               ) : (
                 <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                              background: 'linear-gradient(135deg, #1f2937, #374151, #1f2937)', borderRadius: '16px' }}>
@@ -442,38 +532,21 @@ export default function App() {
               )}
             </div>
 
-            {/* Floating Controls */}
+            {/* Floating Controls - Simplified */}
             {selectedSim?.key && (
               <div style={{ position: 'absolute', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
                            display: 'flex', alignItems: 'center', gap: '12px',
                            background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(20px)',
                            borderRadius: '16px', padding: '16px 24px', border: '1px solid rgba(255, 255, 255, 0.2)',
                            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)' }}>
-                <button onClick={() => setIsPlaying(!isPlaying)}
-                        style={{ padding: '12px', background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
-                                borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                boxShadow: '0 4px 12px rgba(6, 182, 212, 0.25)', transition: 'transform 0.2s' }}
-                        onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
-                        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
-                  {isPlaying ? <Pause style={{ width: '20px', height: '20px' }} /> : 
-                              <Play style={{ width: '20px', height: '20px', marginLeft: '2px' }} />}
-                </button>
                 
-                <button style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.2)',
+                <button onClick={() => simRef.current?.reset?.()}
+                        style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.2)',
                                 borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
                         onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
                         onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}>
                   <RotateCcw style={{ width: '20px', height: '20px' }} />
-                </button>
-                
-                <button style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.2)',
-                                borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
-                        onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
-                        onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}>
-                  <Maximize2 style={{ width: '20px', height: '20px' }} />
                 </button>
                 
                 <div style={{ height: '32px', width: '1px', background: 'rgba(255, 255, 255, 0.3)' }} />
@@ -490,90 +563,7 @@ export default function App() {
             )}
           </div>
 
-          {/* Info Panel */}
-          {showInfo && selectedSim?.key && (
-            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)',
-                         borderRadius: '24px', padding: '24px', border: '1px solid rgba(255, 255, 255, 0.2)',
-                         boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '24px', textAlign: 'center' }}>
-                Pattern Information
-              </h3>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db', 
-                                   marginBottom: '12px', textAlign: 'center' }}>
-                      Animation Speed
-                    </label>
-                    <div>
-                      <input type="range" min="0" max="100" defaultValue="75" className="slider"
-                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
-                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', 
-                                   color: '#9ca3af', marginTop: '4px' }}>
-                        <span>Slow</span>
-                        <span>Fast</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db',
-                                   marginBottom: '12px', textAlign: 'center' }}>
-                      Pattern Complexity
-                    </label>
-                    <div>
-                      <input type="range" min="0" max="100" defaultValue="60" className="slider"
-                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
-                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px',
-                                   color: '#9ca3af', marginTop: '4px' }}>
-                        <span>Simple</span>
-                        <span>Complex</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db',
-                                   marginBottom: '12px', textAlign: 'center' }}>
-                      Scale Factor
-                    </label>
-                    <div>
-                      <input type="range" min="50" max="200" defaultValue="100" className="slider"
-                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
-                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px',
-                                   color: '#9ca3af', marginTop: '4px' }}>
-                        <span>50%</span>
-                        <span>200%</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#d1d5db',
-                                   marginBottom: '12px', textAlign: 'center' }}>
-                      Iteration Depth
-                    </label>
-                    <div>
-                      <input type="range" min="1" max="10" defaultValue="5" className="slider"
-                             style={{ width: '100%', height: '12px', background: 'rgba(255, 255, 255, 0.1)',
-                                      borderRadius: '6px', appearance: 'none', cursor: 'pointer' }} />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px',
-                                   color: '#9ca3af', marginTop: '4px' }}>
-                        <span>1</span>
-                        <span>10</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Info Panel removed - each component manages its own parameters */}
         </div>
       </div>
     </div>
