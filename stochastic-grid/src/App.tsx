@@ -199,7 +199,6 @@ export default function App() {
 
   return (
     <div style={{
-      minHeight: '100vh',
       background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%)',
       color: 'white',
       fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -210,6 +209,14 @@ export default function App() {
       <style>{`
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; }
+        #root { 
+          width: 100% !important; 
+          height: auto !important; 
+          min-height: 100vh !important;
+          display: block !important; 
+          align-items: unset !important; 
+          justify-content: unset !important; 
+        }
         .scrollbar-thin::-webkit-scrollbar { width: 6px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 3px; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
@@ -532,35 +539,7 @@ export default function App() {
               )}
             </div>
 
-            {/* Floating Controls - Simplified */}
-            {selectedSim?.key && (
-              <div style={{ position: 'absolute', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
-                           display: 'flex', alignItems: 'center', gap: '12px',
-                           background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(20px)',
-                           borderRadius: '16px', padding: '16px 24px', border: '1px solid rgba(255, 255, 255, 0.2)',
-                           boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)' }}>
-                
-                <button onClick={() => simRef.current?.reset?.()}
-                        style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.2)',
-                                borderRadius: '12px', border: 'none', color: 'white', cursor: 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
-                        onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
-                        onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}>
-                  <RotateCcw style={{ width: '20px', height: '20px' }} />
-                </button>
-                
-                <div style={{ height: '32px', width: '1px', background: 'rgba(255, 255, 255, 0.3)' }} />
-                
-                <div style={{ textAlign: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#d1d5db', fontWeight: '500', display: 'block' }}>
-                    Pattern {currentSimIndex + 1}
-                  </span>
-                  <span style={{ fontSize: '10px', color: '#9ca3af', display: 'block' }}>
-                    of {currentCategorySims.length}
-                  </span>
-                </div>
-              </div>
-            )}
+            {/* Floating controls removed - each component has its own controls */}
           </div>
 
           {/* Info Panel removed - each component manages its own parameters */}
